@@ -4,11 +4,11 @@ import { RoomType } from '../types';
 describe('RoomService', () => {
     let roomService: RoomService;
 
-    beforeEach(() => {
-        roomService = new RoomService();
-    });
-
     describe('initialization', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should initialize with default rooms', () => {
             const availableRooms = roomService.getAvailableRooms();
             expect(availableRooms).toHaveLength(5);
@@ -37,6 +37,10 @@ describe('RoomService', () => {
     });
 
     describe('getAvailableRooms', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should return only available rooms', () => {
             roomService.reserveRoom('1');
 
@@ -52,6 +56,10 @@ describe('RoomService', () => {
     });
 
     describe('getRoom', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should return room when it exists', () => {
             const room = roomService.getRoom('1');
             expect(room).toBeDefined();
@@ -66,6 +74,10 @@ describe('RoomService', () => {
     });
 
     describe('reserveRoom', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should reserve available room and return true', () => {
             const success = roomService.reserveRoom('1');
             expect(success).toBe(true);
@@ -94,6 +106,7 @@ describe('RoomService', () => {
 
     describe('releaseRoom', () => {
         beforeEach(() => {
+            roomService = new RoomService();
             roomService.reserveRoom('1');
         });
 
@@ -123,6 +136,10 @@ describe('RoomService', () => {
     });
 
     describe('getRoomsByType', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should return standard rooms', () => {
             const standardRooms = roomService.getRoomsByType(RoomType.STANDARD);
             expect(standardRooms).toHaveLength(2);
@@ -168,6 +185,10 @@ describe('RoomService', () => {
     });
 
     describe('room pricing', () => {
+        beforeEach(() => {
+            roomService = new RoomService();
+        });
+
         it('should have correct pricing for room types', () => {
             const standardRoom = roomService.getRoom('1');
             const deluxeRoom = roomService.getRoom('3');
