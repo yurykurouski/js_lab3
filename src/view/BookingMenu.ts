@@ -27,6 +27,13 @@ export class BookingMenu {
                     running = false;
                     break;
                 }
+
+                if (error && typeof error === 'object' && 'name' in error && error.name === 'ExitPromptError') {
+                    console.log('\n\n👋 Thank you for using our Hotel Booking System!');
+                    running = false;
+                    break;
+                }
+
                 console.error('An error occurred:', error);
             }
         }
