@@ -15,6 +15,7 @@ import {
     BookingService
 } from '../services';
 
+
 export class HotelBookingFacade {
     private guestService: GuestService;
     private roomService: RoomService;
