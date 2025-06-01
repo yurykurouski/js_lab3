@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
 import { HotelBookingFacade } from '../facade/HotelBookingFacade';
-import { Guest, RoomType, PaymentInfo } from '../types';
+import { Guest, RoomType, PaymentInfo, BookingAction } from '../types';
 import { ExitFromAppError } from '../exceptions';
 
 
-export class BookingFrontend {
+export class BookingMenu {
     private facade: HotelBookingFacade;
     private currentGuest: Guest | null = null;
 
@@ -278,20 +278,20 @@ export class BookingFrontend {
         console.log(`💰 Total: $${bookingInfo.booking.totalPrice}`);
         console.log(`📈 Status: ${bookingInfo.status?.toUpperCase()}`);
 
-        const availableActions = bookingInfo.availableActions || [];
+        const availableActionInfos = bookingInfo.availableActionInfos || [];
 
-        if (availableActions.length === 0) {
+        if (availableActionInfos.length === 0) {
             console.log('🚫 No actions available for this booking.');
             await this.pressEnterToContinue();
             return;
         }
 
-        const actionChoices = availableActions.map(action => ({
-            name: action.charAt(0).toUpperCase() + action.slice(1),
-            value: action
+        const actionChoices = availableActionInfos.map(actionInfo => ({
+            name: `${actionInfo.label} - ${actionInfo.description}`,
+            value: actionInfo.action
         }));
 
-        const { selectedAction } = await inquirer.prompt<{ selectedAction: string }>([
+        const { selectedAction } = await inquirer.prompt<{ selectedAction: BookingAction | 'back' }>([
             {
                 type: 'list',
                 name: 'selectedAction',
@@ -307,22 +307,24 @@ export class BookingFrontend {
         await this.executeBookingAction(bookingId, selectedAction);
     }
 
-    private async executeBookingAction(bookingId: string, action: string): Promise<void> {
+    private async executeBookingAction(bookingId: string, action: BookingAction | 'back'): Promise<void> {
+        if (action === 'back') {
+            return;
+        }
+
         let result: { success: boolean; message: string };
 
-        switch (action.toLowerCase()) {
-            case 'confirm':
+        switch (action) {
+            case BookingAction.CONFIRM:
                 result = this.facade.confirmBooking(bookingId);
                 break;
-            case 'cancel':
+            case BookingAction.CANCEL:
                 result = this.facade.cancelBooking(bookingId);
                 break;
-            case 'checkin':
-            case 'check-in':
+            case BookingAction.CHECK_IN:
                 result = this.facade.checkIn(bookingId);
                 break;
-            case 'checkout':
-            case 'check-out':
+            case BookingAction.CHECK_OUT:
                 result = this.facade.checkOut(bookingId);
                 break;
             default:

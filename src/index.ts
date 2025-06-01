@@ -1,8 +1,8 @@
-import { BookingFrontend } from './frontend/BookingFrontend';
+import { BookingMenu } from './view/BookingMenu';
 
 
 async function main() {
-    const demo = new BookingFrontend();
+    const demo = new BookingMenu();
 
     await demo.start();
 }
