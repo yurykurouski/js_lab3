@@ -1,7 +1,7 @@
 {
   "name": "js_lab3",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
     "start:watch": "tsc --watch && ts-node src/index.ts",
