@@ -1,5 +1,5 @@
 import { Booking } from '../state';
-import { BookingDetails, BookingStatus } from '../types';
+import { BookingDetails, BookingStatus, BookingAction } from '../types';
 
 describe('State Pattern - Booking State Management', () => {
     let booking: Booking;
@@ -20,20 +20,20 @@ describe('State Pattern - Booking State Management', () => {
 
     test('should start in NEW state', () => {
         expect(booking.getStatus()).toBe(BookingStatus.NEW);
-        expect(booking.getAvailableActions()).toEqual(['confirm', 'cancel']);
+        expect(booking.getAvailableActions()).toEqual([BookingAction.CONFIRM, BookingAction.CANCEL]);
     });
 
     test('should transition from NEW to CONFIRMED', () => {
         booking.confirm();
         expect(booking.getStatus()).toBe(BookingStatus.CONFIRMED);
-        expect(booking.getAvailableActions()).toEqual(['checkIn', 'cancel']);
+        expect(booking.getAvailableActions()).toEqual([BookingAction.CHECK_IN, BookingAction.CANCEL]);
     });
 
     test('should transition from CONFIRMED to CHECKED_IN', () => {
         booking.confirm();
         booking.checkIn();
         expect(booking.getStatus()).toBe(BookingStatus.CHECKED_IN);
-        expect(booking.getAvailableActions()).toEqual(['checkOut']);
+        expect(booking.getAvailableActions()).toEqual([BookingAction.CHECK_OUT]);
     });
 
     test('should transition from CHECKED_IN to CHECKED_OUT', () => {
