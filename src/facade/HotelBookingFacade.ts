@@ -1,4 +1,12 @@
-import { BookingDetails, Guest, PaymentInfo, Room, RoomType } from '../types';
+import {
+    BookingDetails,
+    Guest,
+    PaymentInfo,
+    Room,
+    RoomType,
+    BookingAction,
+    BookingActionInfo
+} from '../types';
 import {
     GuestService,
     RoomService,
@@ -164,7 +172,8 @@ export class HotelBookingFacade {
     public getBookingInfo(bookingId: string): {
         booking?: BookingDetails;
         status?: string;
-        availableActions?: string[];
+        availableActions?: BookingAction[];
+        availableActionInfos?: BookingActionInfo[];
         message: string
     } {
         const booking = this.bookingService.getBooking(bookingId);
@@ -176,6 +185,7 @@ export class HotelBookingFacade {
             booking: booking.getDetails(),
             status: booking.getStatus(),
             availableActions: booking.getAvailableActions(),
+            availableActionInfos: booking.getAvailableActionInfos(),
             message: 'Booking information retrieved successfully'
         };
     }
