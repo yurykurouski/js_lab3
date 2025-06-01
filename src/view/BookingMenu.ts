@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import { HotelBookingFacade } from '../facade/HotelBookingFacade';
 import { Guest, RoomType, PaymentInfo, BookingAction } from '../types';
 import { ExitFromAppError } from '../exceptions';
+import { generateUUID } from '../helpers';
 
 
 export class BookingMenu {
@@ -89,18 +90,11 @@ export class BookingMenu {
     private async createOrSwitchGuest(): Promise<void> {
         console.log('\n👤 Guest Profile Management');
 
-        const { guestId, name, email, phone } = await inquirer.prompt<{
-            guestId: string;
+        const { name, email, phone } = await inquirer.prompt<{
             name: string;
             email: string;
             phone: string;
         }>([
-            {
-                type: 'input',
-                name: 'guestId',
-                message: 'Enter guest ID:',
-                validate: (input) => input.trim() !== '' || 'Guest ID cannot be empty'
-            },
             {
                 type: 'input',
                 name: 'name',
@@ -124,7 +118,7 @@ export class BookingMenu {
             }
         ]);
 
-        this.currentGuest = { id: guestId, name, email, phone };
+        this.currentGuest = { id: generateUUID(), name, email, phone };
         console.log(`✅ Guest profile set: ${name} (${email})`);
 
         await this.pressEnterToContinue();
