@@ -1,4 +1,4 @@
-import { BookingDetails, BookingStatus } from "../types";
+import { BookingDetails, BookingStatus, BookingAction, BookingActionInfo } from "../types";
 import { BookingState } from "./BookingState";
 import { NewBookingState } from "./NewBookingState";
 
@@ -44,7 +44,11 @@ export class Booking {
         this.state.cancel(this);
     }
 
-    public getAvailableActions(): string[] {
+    public getAvailableActions(): BookingAction[] {
         return this.state.getAvailableActions();
+    }
+
+    public getAvailableActionInfos(): BookingActionInfo[] {
+        return this.state.getAvailableActionInfos();
     }
 }

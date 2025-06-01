@@ -43,3 +43,16 @@ export enum BookingStatus {
   CHECKED_OUT = 'checked_out',
   CANCELLED = 'cancelled'
 }
+
+export enum BookingAction {
+  CONFIRM = 'confirm',
+  CANCEL = 'cancel',
+  CHECK_IN = 'checkin',
+  CHECK_OUT = 'checkout'
+}
+
+export interface BookingActionInfo {
+  action: BookingAction;
+  label: string;
+  description: string;
+}

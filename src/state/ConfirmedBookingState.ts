@@ -1,4 +1,4 @@
-import { BookingStatus } from "../types";
+import { BookingStatus, BookingAction, BookingActionInfo } from "../types";
 import { Booking } from "./Booking";
 import { BookingState } from "./BookingState";
 import { CancelledBookingState } from "./CancelledBookingState";
@@ -10,8 +10,12 @@ export class ConfirmedBookingState extends BookingState {
         return BookingStatus.CONFIRMED;
     }
 
-    getAvailableActions(): string[] {
-        return ['checkIn', 'cancel'];
+    getAvailableActions(): BookingAction[] {
+        return [BookingAction.CHECK_IN, BookingAction.CANCEL];
+    }
+
+    getAvailableActionInfos(): BookingActionInfo[] {
+        return this.getAvailableActions().map(action => this.createActionInfo(action));
     }
 
     confirm(): void {

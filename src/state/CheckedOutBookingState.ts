@@ -1,4 +1,4 @@
-import { BookingStatus } from "../types";
+import { BookingStatus, BookingAction, BookingActionInfo } from "../types";
 import { BookingState } from "./BookingState";
 
 
@@ -7,7 +7,11 @@ export class CheckedOutBookingState extends BookingState {
         return BookingStatus.CHECKED_OUT;
     }
 
-    getAvailableActions(): string[] {
+    getAvailableActions(): BookingAction[] {
+        return [];
+    }
+
+    getAvailableActionInfos(): BookingActionInfo[] {
         return [];
     }
 
