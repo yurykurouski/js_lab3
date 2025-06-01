@@ -1,0 +1,31 @@
+{
+  "name": "js_lab3",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "start:watch": "tsc --watch && ts-node src/index.ts",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint . --ext .ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.14",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "jest": "^29.7.0",
+    "mocha": "^11.1.0",
+    "prettier": "3.5.3",
+    "ts-jest": "^29.3.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "repository": "git@github.com:yurykurouski/js_lab3.git",
+  "author": "Yury Kurouski <ymorpheus@gmail.com>",
+  "license": "MIT"
+}
