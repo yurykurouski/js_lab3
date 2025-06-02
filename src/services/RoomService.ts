@@ -1,5 +1,5 @@
 import { Room, RoomType } from "../types";
-import defaultRoomsData from "../data/defaultRooms.json";
+import defaultRoomsData from "../../data/defaultRooms.json";
 
 
 export class RoomService {
