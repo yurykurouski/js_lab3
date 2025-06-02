@@ -26,7 +26,7 @@ export class RoomService {
     }
 
     reserveRoom(roomId: string): boolean {
-        const room = this.rooms.get(roomId);
+        const room = this.getRoom(roomId);
         if (room && room.isAvailable) {
             room.isAvailable = false;
             console.log(`Room ${room.number} reserved successfully`);
@@ -36,7 +36,7 @@ export class RoomService {
     }
 
     releaseRoom(roomId: string): void {
-        const room = this.rooms.get(roomId);
+        const room = this.getRoom(roomId);
         if (room) {
             room.isAvailable = true;
             console.log(`Room ${room.number} is now available`);
