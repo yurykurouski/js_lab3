@@ -1,6 +1,6 @@
 import { BookingDetails, BookingStatus, BookingAction, BookingActionInfo } from "../types";
-import { BookingState } from "./BookingState";
-import { NewBookingState } from "./NewBookingState";
+import { BookingState } from "../state/BookingState";
+import { NewBookingState } from "../state/NewBookingState";
 
 
 export class Booking {

@@ -1,4 +1,4 @@
-import { Booking } from "../state";
+import { Booking } from "../entities";
 import { BookingDetails, BookingStatus } from "../types";
 
 

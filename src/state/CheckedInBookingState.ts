@@ -1,5 +1,5 @@
 import { BookingStatus, BookingAction, BookingActionInfo } from "../types";
-import { Booking } from "./Booking";
+import { Booking } from "../entities";
 import { BookingState } from "./BookingState";
 import { CheckedOutBookingState } from "./CheckedOutBookingState";
 

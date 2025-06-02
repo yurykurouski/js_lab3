@@ -1,4 +1,4 @@
-import { Booking } from '../state';
+import { Booking } from '../entities';
 import { BookingDetails, BookingStatus, BookingAction } from '../types';
 
 describe('State Pattern - Booking State Management', () => {
