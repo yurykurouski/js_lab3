@@ -13,20 +13,22 @@ describe('State Pattern - Booking State Management', () => {
             checkInDate: new Date('2025-06-15'),
             checkOutDate: new Date('2025-06-18'),
             totalPrice: 300,
-            createdAt: new Date()
+            createdAt: new Date(),
         };
         booking = new Booking(bookingDetails);
     });
 
     test('should start in NEW state', () => {
         expect(booking.getStatus()).toBe(BookingStatus.NEW);
-        expect(booking.getAvailableActions()).toEqual([BookingAction.CONFIRM, BookingAction.CANCEL]);
+        expect(booking.getAvailableActions())
+            .toEqual([BookingAction.CONFIRM, BookingAction.CANCEL]);
     });
 
     test('should transition from NEW to CONFIRMED', () => {
         booking.confirm();
         expect(booking.getStatus()).toBe(BookingStatus.CONFIRMED);
-        expect(booking.getAvailableActions()).toEqual([BookingAction.CHECK_IN, BookingAction.CANCEL]);
+        expect(booking.getAvailableActions())
+            .toEqual([BookingAction.CHECK_IN, BookingAction.CANCEL]);
     });
 
     test('should transition from CONFIRMED to CHECKED_IN', () => {

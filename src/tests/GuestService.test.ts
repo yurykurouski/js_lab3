@@ -11,7 +11,7 @@ describe('GuestService', () => {
             id: 'guest1',
             name: 'John Doe',
             email: 'john.doe@email.com',
-            phone: '+1234567890'
+            phone: '+1234567890',
         };
     });
 
@@ -75,7 +75,7 @@ describe('GuestService', () => {
                 id: 'guest2',
                 name: 'Jane Smith',
                 email: 'jane.smith@email.com',
-                phone: '+0987654321'
+                phone: '+0987654321',
             };
 
             guestService.registerGuest(guest1);

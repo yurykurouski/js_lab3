@@ -20,25 +20,25 @@ export abstract class BookingState {
         const actionInfoMap: Record<BookingAction, { label: string; description: string }> = {
             [BookingAction.CONFIRM]: {
                 label: 'Confirm',
-                description: 'Confirm the booking'
+                description: 'Confirm the booking',
             },
             [BookingAction.CANCEL]: {
                 label: 'Cancel',
-                description: 'Cancel the booking'
+                description: 'Cancel the booking',
             },
             [BookingAction.CHECK_IN]: {
                 label: 'Check In',
-                description: 'Check in to the room'
+                description: 'Check in to the room',
             },
             [BookingAction.CHECK_OUT]: {
                 label: 'Check Out',
-                description: 'Check out from the room'
-            }
+                description: 'Check out from the room',
+            },
         };
 
         return {
             action,
-            ...actionInfoMap[action]
+            ...actionInfoMap[action],
         };
     }
 }

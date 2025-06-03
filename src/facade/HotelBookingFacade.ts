@@ -5,14 +5,14 @@ import {
     Room,
     RoomType,
     BookingAction,
-    BookingActionInfo
+    BookingActionInfo,
 } from '../types';
 import {
     GuestService,
     RoomService,
     PaymentService,
     NotificationService,
-    BookingService
+    BookingService,
 } from '../services';
 
 
@@ -36,7 +36,7 @@ export class HotelBookingFacade {
         roomType: RoomType,
         checkInDate: Date,
         checkOutDate: Date,
-        paymentInfo: PaymentInfo
+        paymentInfo: PaymentInfo,
     ): { success: boolean; bookingId?: string; message: string } {
         try {
             console.log(`\n=== Starting booking process for ${guest.name} ===`);
@@ -52,10 +52,13 @@ export class HotelBookingFacade {
 
             const selectedRoom = availableRooms[0];
 
-            const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+            const nights = Math.ceil(
+                (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24),
+            );
             const totalPrice = selectedRoom.price * nights;
 
-            const paymentSuccess = this.paymentService.processPayment(totalPrice, paymentInfo.cardNumber);
+            const paymentSuccess =
+                this.paymentService.processPayment(totalPrice, paymentInfo.cardNumber);
             if (!paymentSuccess) {
                 return { success: false, message: 'Payment processing failed' };
             }
@@ -73,7 +76,7 @@ export class HotelBookingFacade {
                 checkInDate,
                 checkOutDate,
                 totalPrice,
-                createdAt: new Date()
+                createdAt: new Date(),
             };
 
             this.bookingService.createBooking(bookingDetails);
@@ -86,7 +89,7 @@ export class HotelBookingFacade {
             return {
                 success: true,
                 bookingId,
-                message: `Booking created successfully. Room ${selectedRoom.number} reserved for ${nights} nights.`
+                message: `Booking created successfully. Room ${selectedRoom.number} reserved for ${nights} nights.`,
             };
 
         } catch (error) {
@@ -187,7 +190,7 @@ export class HotelBookingFacade {
             status: booking.getStatus(),
             availableActions: booking.getAvailableActions(),
             availableActionInfos: booking.getAvailableActionInfos(),
-            message: 'Booking information retrieved successfully'
+            message: 'Booking information retrieved successfully',
         };
     }
 
@@ -199,7 +202,7 @@ export class HotelBookingFacade {
         return this.bookingService.getAllBookings().map(booking => ({
             bookingId: booking.getDetails().id,
             details: booking.getDetails(),
-            status: booking.getStatus()
+            status: booking.getStatus(),
         }));
     }
 }

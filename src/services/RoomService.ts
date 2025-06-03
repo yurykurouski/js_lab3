@@ -1,5 +1,5 @@
-import { Room, RoomType } from "../types";
-import defaultRoomsData from "../../data/defaultRooms.json";
+import { Room, RoomType } from '../types';
+import defaultRoomsData from '../../data/defaultRooms.json';
 
 
 export class RoomService {
@@ -44,6 +44,7 @@ export class RoomService {
     }
 
     getRoomsByType(type: RoomType): Room[] {
-        return Array.from(this.rooms.values()).filter(room => room.type === type && room.isAvailable);
+        return Array.from(this.rooms.values())
+            .filter(room => room.type === type && room.isAvailable);
     }
 }

@@ -1,4 +1,4 @@
-import { Guest } from "../types";
+import { Guest } from '../types';
 
 
 export class GuestService {

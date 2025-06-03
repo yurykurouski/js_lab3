@@ -14,7 +14,7 @@ describe('BookingService', () => {
             checkInDate: new Date('2024-01-15'),
             checkOutDate: new Date('2024-01-18'),
             totalPrice: 300,
-            createdAt: new Date('2024-01-10')
+            createdAt: new Date('2024-01-10'),
         };
     });
 

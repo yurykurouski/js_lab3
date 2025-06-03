@@ -1,5 +1,5 @@
-import { Booking } from "../entities";
-import { BookingDetails, BookingStatus } from "../types";
+import { Booking } from '../entities';
+import { BookingDetails, BookingStatus } from '../types';
 
 
 export class BookingService {
@@ -35,13 +35,13 @@ export class BookingService {
 
     getBookingsByGuest(guestId: string): Booking[] {
         return Array.from(this.bookings.values()).filter(
-            booking => booking.getDetails().guestId === guestId
+            booking => booking.getDetails().guestId === guestId,
         );
     }
 
     getBookingsByRoom(roomId: string): Booking[] {
         return Array.from(this.bookings.values()).filter(
-            booking => booking.getDetails().roomId === roomId
+            booking => booking.getDetails().roomId === roomId,
         );
     }
 

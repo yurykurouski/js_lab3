@@ -1,1 +1,1 @@
-export { ExitFromAppError } from './ExitFromAppError'
+export { ExitFromAppError } from './ExitFromAppError';

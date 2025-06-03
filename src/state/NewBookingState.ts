@@ -1,8 +1,8 @@
-import { BookingStatus, BookingAction, BookingActionInfo } from "../types";
-import { Booking } from "../entities";
-import { BookingState } from "./BookingState";
-import { CancelledBookingState } from "./CancelledBookingState";
-import { ConfirmedBookingState } from "./ConfirmedBookingState";
+import { BookingStatus, BookingAction, BookingActionInfo } from '../types';
+import { Booking } from '../entities';
+import { BookingState } from './BookingState';
+import { CancelledBookingState } from './CancelledBookingState';
+import { ConfirmedBookingState } from './ConfirmedBookingState';
 
 
 export class NewBookingState extends BookingState {

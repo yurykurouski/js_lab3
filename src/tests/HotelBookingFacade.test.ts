@@ -11,7 +11,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
             id: 'test_guest_001',
             name: 'Test Guest',
             email: 'test@example.com',
-            phone: '+1234567890'
+            phone: '+1234567890',
         };
     });
 
@@ -38,8 +38,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         expect(result.success).toBe(true);
@@ -60,8 +60,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '123', // Invalid card number
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         expect(result.success).toBe(false);
@@ -69,7 +69,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     });
 
     test('should confirm booking successfully', () => {
-        // First create a booking
+    // First create a booking
         const checkIn = new Date('2025-06-15');
         const checkOut = new Date('2025-06-18');
 
@@ -82,8 +82,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         expect(bookingResult.success).toBe(true);
@@ -96,7 +96,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     });
 
     test('should handle check-in process', () => {
-        // Create and confirm booking first
+    // Create and confirm booking first
         const checkIn = new Date('2025-06-15');
         const checkOut = new Date('2025-06-18');
 
@@ -109,8 +109,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         const bookingId = bookingResult.bookingId!;
@@ -123,7 +123,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     });
 
     test('should handle complete booking lifecycle', () => {
-        // Book
+    // Book
         const checkIn = new Date('2025-06-15');
         const checkOut = new Date('2025-06-18');
 
@@ -136,8 +136,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         expect(bookingResult.success).toBe(true);
@@ -162,7 +162,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     });
 
     test('should cancel booking successfully', () => {
-        // Create booking
+    // Create booking
         const checkIn = new Date('2025-06-15');
         const checkOut = new Date('2025-06-18');
 
@@ -175,8 +175,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         const bookingId = bookingResult.bookingId!;
@@ -198,7 +198,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     });
 
     test('should get all bookings', () => {
-        // Create a booking first
+    // Create a booking first
         const checkIn = new Date('2025-06-15');
         const checkOut = new Date('2025-06-18');
 
@@ -211,8 +211,8 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
                 cardNumber: '1234567890123456',
                 expiryDate: '12/26',
                 cvv: '123',
-                cardHolderName: 'Test Guest'
-            }
+                cardHolderName: 'Test Guest',
+            },
         );
 
         const allBookings = facade.getAllBookings();

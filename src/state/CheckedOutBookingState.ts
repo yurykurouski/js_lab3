@@ -1,5 +1,5 @@
-import { BookingStatus, BookingAction, BookingActionInfo } from "../types";
-import { BookingState } from "./BookingState";
+import { BookingStatus, BookingAction, BookingActionInfo } from '../types';
+import { BookingState } from './BookingState';
 
 
 export class CheckedOutBookingState extends BookingState {

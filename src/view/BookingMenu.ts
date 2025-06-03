@@ -46,7 +46,7 @@ export class BookingMenu {
             'Make a Booking',
             'Manage Existing Bookings',
             'View All Bookings',
-            'Exit'
+            'Exit',
         ];
 
         const { action } = await inquirer.prompt<{ action: string }>([
@@ -54,8 +54,8 @@ export class BookingMenu {
                 type: 'list',
                 name: 'action',
                 message: 'What would you like to do?',
-                choices
-            }
+                choices,
+            },
         ]);
 
         switch (action) {
@@ -106,7 +106,7 @@ export class BookingMenu {
                 type: 'input',
                 name: 'name',
                 message: 'Enter full name:',
-                validate: (input) => input.trim() !== '' || 'Name cannot be empty'
+                validate: (input) => input.trim() !== '' || 'Name cannot be empty',
             },
             {
                 type: 'input',
@@ -115,14 +115,14 @@ export class BookingMenu {
                 validate: (input) => {
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     return emailRegex.test(input) || 'Please enter a valid email address';
-                }
+                },
             },
             {
                 type: 'input',
                 name: 'phone',
                 message: 'Enter phone number:',
-                validate: (input) => input.trim() !== '' || 'Phone number cannot be empty'
-            }
+                validate: (input) => input.trim() !== '' || 'Phone number cannot be empty',
+            },
         ]);
 
         this.currentGuest = { id: generateUUID(), name, email, phone };
@@ -148,9 +148,9 @@ export class BookingMenu {
                 choices: [
                     { name: 'Standard Room', value: RoomType.STANDARD },
                     { name: 'Deluxe Room', value: RoomType.DELUXE },
-                    { name: 'Suite', value: RoomType.SUITE }
-                ]
-            }
+                    { name: 'Suite', value: RoomType.SUITE },
+                ],
+            },
         ]);
 
         const { checkInDate, checkOutDate } = await inquirer.prompt<{
@@ -164,7 +164,7 @@ export class BookingMenu {
                 validate: (input) => {
                     const date = new Date(input);
                     return !isNaN(date.getTime()) || 'Please enter a valid date in YYYY-MM-DD format';
-                }
+                },
             },
             {
                 type: 'input',
@@ -173,8 +173,8 @@ export class BookingMenu {
                 validate: (input) => {
                     const date = new Date(input);
                     return !isNaN(date.getTime()) || 'Please enter a valid date in YYYY-MM-DD format';
-                }
-            }
+                },
+            },
         ]);
 
         const paymentInfo = await this.getPaymentInfo();
@@ -184,7 +184,7 @@ export class BookingMenu {
             roomType,
             new Date(checkInDate),
             new Date(checkOutDate),
-            paymentInfo
+            paymentInfo,
         );
 
         if (bookingResult.success) {
@@ -205,7 +205,7 @@ export class BookingMenu {
                 type: 'input',
                 name: 'cardNumber',
                 message: 'Enter card number:',
-                validate: (input) => input.replace(/\s/g, '').length >= 16 || 'Please enter a valid card number'
+                validate: (input) => input.replace(/\s/g, '').length >= 16 || 'Please enter a valid card number',
             },
             {
                 type: 'input',
@@ -214,20 +214,20 @@ export class BookingMenu {
                 validate: (input) => {
                     const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
                     return regex.test(input) || 'Please enter date in MM/YY format';
-                }
+                },
             },
             {
                 type: 'input',
                 name: 'cvv',
                 message: 'Enter CVV:',
-                validate: (input) => input.length === 3 || 'CVV must be 3 digits'
+                validate: (input) => input.length === 3 || 'CVV must be 3 digits',
             },
             {
                 type: 'input',
                 name: 'cardHolderName',
                 message: 'Enter cardholder name:',
-                validate: (input) => input.trim() !== '' || 'Cardholder name cannot be empty'
-            }
+                validate: (input) => input.trim() !== '' || 'Cardholder name cannot be empty',
+            },
         ]);
     }
 
@@ -242,7 +242,7 @@ export class BookingMenu {
 
         const bookingChoices = allBookings.map(booking => ({
             name: `${booking.bookingId} - ${booking.details.guestId} (${booking.status.toUpperCase()})`,
-            value: booking.bookingId
+            value: booking.bookingId,
         }));
 
         const { selectedBookingId } = await inquirer.prompt<{ selectedBookingId: string }>([
@@ -250,8 +250,8 @@ export class BookingMenu {
                 type: 'list',
                 name: 'selectedBookingId',
                 message: 'Select a booking to manage:',
-                choices: [...bookingChoices, { name: '← Back to Main Menu', value: 'back' }]
-            }
+                choices: [...bookingChoices, { name: '← Back to Main Menu', value: 'back' }],
+            },
         ]);
 
         if (selectedBookingId === 'back') {
@@ -270,7 +270,7 @@ export class BookingMenu {
             return;
         }
 
-        console.log(`\n📊 Booking Details:`);
+        console.log('\n📊 Booking Details:');
         console.log(`🆔 ID: ${bookingInfo.booking.id}`);
         console.log(`👤 Guest: ${bookingInfo.booking.guestId}`);
         console.log(`🏨 Room: ${bookingInfo.booking.roomId}`);
@@ -289,7 +289,7 @@ export class BookingMenu {
 
         const actionChoices = availableActionInfos.map(actionInfo => ({
             name: `${actionInfo.label} - ${actionInfo.description}`,
-            value: actionInfo.action
+            value: actionInfo.action,
         }));
 
         const { selectedAction } = await inquirer.prompt<{ selectedAction: BookingAction | 'back' }>([
@@ -297,8 +297,8 @@ export class BookingMenu {
                 type: 'list',
                 name: 'selectedAction',
                 message: 'What would you like to do?',
-                choices: [...actionChoices, { name: '← Back', value: 'back' }]
-            }
+                choices: [...actionChoices, { name: '← Back', value: 'back' }],
+            },
         ]);
 
         if (selectedAction === 'back') {
@@ -363,8 +363,8 @@ export class BookingMenu {
             {
                 type: 'input',
                 name: 'continue',
-                message: 'Press Enter to continue...'
-            }
+                message: 'Press Enter to continue...',
+            },
         ]);
     }
 }
