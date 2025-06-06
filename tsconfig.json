@@ -12,7 +12,27 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/api/*": ["./src/api/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/entities/*": ["./src/entities/*"],
+      "@/exceptions/*": ["./src/exceptions/*"],
+      "@/facade/*": ["./src/facade/*"],
+      "@/factories/*": ["./src/factories/*"],
+      "@/helpers/*": ["./src/helpers/*"],
+      "@/patterns/*": ["./src/patterns/*"],
+      "@/patterns/adapter/*": ["./src/patterns/adapter/*"],
+      "@/patterns/observer/*": ["./src/patterns/observer/*"],
+      "@/routes/*": ["./src/routes/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/state/*": ["./src/state/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/view/*": ["./src/view/*"],
+      "@/tests/*": ["./src/tests/*"]
+    }
   },
   "include": [
     "src/**/*"

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "start:watch": "tsc --watch && ts-node src/index.ts",
     "server": "ts-node src/server.ts",
     "server:watch": "ts-node --watch src/server.ts",
@@ -31,6 +31,7 @@
     "mocha": "^11.1.0",
     "ts-jest": "^29.3.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.33.1"
   },
