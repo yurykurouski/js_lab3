@@ -1,13 +1,3 @@
-/**
- * Adapter Pattern Tests
- *
- * Tests for the Payment Adapter pattern implementation including:
- * - Individual payment provider adapters
- * - Payment adapter factory
- * - Fallback mechanisms
- * - Integration with PaymentService
- */
-
 import {
     PaymentResult,
     RefundResult,
@@ -17,15 +7,15 @@ import {
     StripePaymentProvider,
     PayPalPaymentProvider,
     SquarePaymentProvider,
-} from '../patterns/adapter/PaymentAdapter';
+} from '@/adapters/PaymentAdapter';
 
 import {
     PaymentAdapterFactory,
-    PaymentAdapterConfig,
-} from '../patterns/adapter/PaymentAdapterFactory';
+} from '@/factories/PaymentAdapterFactory';
 import { PaymentProviderType } from '../types';
 
 import { PaymentService } from '../services/PaymentService';
+import { PaymentAdapterConfig } from '@/factories/types';
 
 describe('Adapter Pattern', () => {
     describe('Payment Adapters', () => {

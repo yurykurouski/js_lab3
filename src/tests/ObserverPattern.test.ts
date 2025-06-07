@@ -1,5 +1,4 @@
-import { BookingEventManager, NotificationObserver, AuditLogObserver, MetricsObserver } from '../patterns/observer';
-import { BookingEventType } from '../patterns/observer';
+import { AuditLogObserver, BookingEventManager, BookingEventType, MetricsObserver, NotificationObserver } from '@/observers';
 import { NotificationService } from '../services/NotificationService';
 import { BookingDetails, BookingStatus, RoomType } from '../types';
 
