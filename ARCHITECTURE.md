@@ -1,5 +1,43 @@
 # UML Diagrams for Hotel Booking System
 
+## Service Factory Pattern - Class Diagram
+
+```mermaid
+classDiagram
+    class ServiceFactory {
+        <<static>>
+        +createHotelBookingFacade() HotelBookingFacade
+        +createGuestService() GuestService
+        +createRoomService() RoomService  
+        +createPaymentService() PaymentService
+        +createNotificationService() NotificationService
+        +createBookingService() BookingService
+        -isTestEnvironment() boolean
+    }
+    
+    class HotelBookingFacade {
+        -guestService: GuestService
+        -roomService: RoomService
+        -paymentService: PaymentService
+        -notificationService: NotificationService
+        -bookingService: BookingService
+        +getRoomServiceForTesting() RoomService
+    }
+    
+    ServiceFactory ..> HotelBookingFacade : creates
+    ServiceFactory ..> GuestService : creates
+    ServiceFactory ..> RoomService : creates
+    ServiceFactory ..> PaymentService : creates
+    ServiceFactory ..> NotificationService : creates
+    ServiceFactory ..> BookingService : creates
+    
+    HotelBookingFacade --> GuestService
+    HotelBookingFacade --> RoomService
+    HotelBookingFacade --> PaymentService
+    HotelBookingFacade --> NotificationService
+    HotelBookingFacade --> BookingService
+```
+
 ## State Pattern - Booking State Diagram
 
 ```mermaid
@@ -145,7 +183,8 @@ classDiagram
 
 ```mermaid
 graph TB
-    Client[Client Code] --> Facade[HotelBookingFacade]
+    Client[Client Code] --> Factory[ServiceFactory]
+    Factory --> Facade[HotelBookingFacade]
     
     Facade --> GS[GuestService]
     Facade --> RS[RoomService]
@@ -153,8 +192,6 @@ graph TB
     Facade --> NS[NotificationService]
     Facade --> BS[BookingService]
     BS --> Booking[Booking Context]
-    Facade --> NS[NotificationService]
-    Facade --> Booking[Booking Context]
     
     Booking --> State[BookingState]
     State --> New[NewBookingState]
@@ -162,6 +199,10 @@ graph TB
     State --> CheckedIn[CheckedInBookingState]
     State --> CheckedOut[CheckedOutBookingState]
     State --> Cancelled[CancelledBookingState]
+    
+    subgraph "Factory Pattern"
+        Factory
+    end
     
     subgraph "Facade Pattern"
         Facade
@@ -184,6 +225,13 @@ graph TB
 ```
 
 ## Pattern Benefits
+
+### Service Factory Pattern Benefits:
+- **Centralized Creation**: Single point for service instantiation
+- **Environment Adaptation**: Different initialization for test vs production
+- **Dependency Injection**: Clean separation of concerns
+- **Testability**: Easy service mocking and test setup
+- **Consistency**: Uniform service configuration across the system
 
 ### Facade Pattern Benefits:
 - **Simplification**: Complex booking process simplified to single method calls
