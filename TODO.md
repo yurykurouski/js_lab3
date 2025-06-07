@@ -2,6 +2,11 @@
 
 ## Design Patterns to Implement
 
-- [ ] ADD ADAPTER Pattern
-- [ ] ADD OBSERVER Pattern (would integrate naturally with existing BookingMenu)
-- [ ] ADD DECORATOR(?) Pattern
+- OBSERVER 
+- DECORATOR(?) Pattern
+
+## Completed Patterns Summary
+
+- Singleton: `src/entities/Booking`
+- Facade: `src/facade/HotelBookingFacade`
+- State: `src/state/BookingState`
