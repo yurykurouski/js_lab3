@@ -14,7 +14,7 @@ import {
     NotificationObserver,
     AuditLogObserver,
     MetricsObserver,
-} from '../patterns/observer';
+} from '@/observers';
 import { ServiceFactoryConfig } from './types';
 
 
@@ -35,6 +35,7 @@ export class ServiceFactory {
         enableObservers: true,
         enableMetrics: true,
         initializationTimeout: 30000,
+        localMode: false,
     };
 
 
@@ -42,7 +43,7 @@ export class ServiceFactory {
       Initialize all services
      */
     public static async initializeServices(
-        config?: Required<ServiceFactoryConfig>,
+        config?: ServiceFactoryConfig,
     ): Promise<HotelBookingFacade> {
         const loader = new LoadingIndicator('Loading...');
         loader.start();
@@ -52,7 +53,7 @@ export class ServiceFactory {
 
             const services = this.createServiceInstances();
 
-            await this.initializeAsyncServices(services);
+            await this.initializeAsyncServices(services, finalConfig);
 
             this.setupObserver(services.notificationService, finalConfig);
 
@@ -81,9 +82,16 @@ export class ServiceFactory {
         };
     }
 
-    private static async initializeAsyncServices(services: ServiceCollection): Promise<void> {
+    private static async initializeAsyncServices(
+        services: ServiceCollection,
+        config: Required<ServiceFactoryConfig>,
+    ): Promise<void> {
         try {
-            await services.roomService.initializeRooms();
+            if (config.localMode) {
+                await services.roomService.initializeWithDefaultRooms();
+            } else {
+                await services.roomService.initializeRooms();
+            }
         } catch (error) {
             throw new ServiceInitializationError(
                 'Failed to initialize room service',

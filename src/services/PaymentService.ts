@@ -1,6 +1,7 @@
-import { BookingEventManager } from '../patterns/observer';
-import { PaymentAdapterFactory } from '../patterns/adapter';
+
+import { BookingEventManager } from '@/observers';
 import { PaymentProviderType } from '../types';
+import { PaymentAdapterFactory } from '@/factories';
 
 export class PaymentService {
     private eventManager: BookingEventManager;

@@ -1,7 +1,6 @@
 import { BookingDetails, BookingStatus, BookingAction, BookingActionInfo } from '../types';
-import { BookingState } from '../state/BookingState';
-import { NewBookingState } from '../state/NewBookingState';
-import { BookingEventManager, BookingEventType } from '../patterns/observer';
+import { BookingState, NewBookingState } from '@/state';
+import { BookingEventManager, BookingEventType } from '@/observers';
 
 
 export class Booking {
