@@ -56,4 +56,3 @@ export interface BookingActionInfo {
     description: string;
 }
 
-export type PaymentProviderType = 'stripe' | 'paypal' | 'square';

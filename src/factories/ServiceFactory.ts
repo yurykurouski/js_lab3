@@ -1,33 +1,21 @@
 import { logger } from '@/helpers/logger';
-import { ServiceInitializationError } from './../exceptions/ServiceInitializationError';
+import { ServiceInitializationError } from '@/exceptions/ServiceInitializationError';
 import {
     GuestService,
     RoomService,
     PaymentService,
     NotificationService,
     BookingService,
-} from '../services';
-import { HotelBookingFacade } from '../facade/HotelBookingFacade';
-import { LoadingIndicator } from '../helpers';
+} from '@/services';
+import { HotelBookingFacade } from '@/facade';
+import { LoadingIndicator } from '@/helpers';
 import {
     BookingEventManager,
     NotificationObserver,
     AuditLogObserver,
     MetricsObserver,
 } from '@/observers';
-import { ServiceFactoryConfig } from './types';
-
-
-/**
- * Service collection interface for type safety
- */
-interface ServiceCollection {
-    guestService: GuestService;
-    roomService: RoomService;
-    paymentService: PaymentService;
-    notificationService: NotificationService;
-    bookingService: BookingService;
-}
+import { ServiceCollection, ServiceFactoryConfig } from './types';
 
 
 export class ServiceFactory {
