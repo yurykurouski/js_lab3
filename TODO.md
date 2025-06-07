@@ -10,4 +10,4 @@
 - Singleton: `src/entities/Booking`
 - Facade: `src/facade/HotelBookingFacade`
 - State: `src/state/BookingState`
-- Factory: `src/factories/ServiceFactory.ts`
+- Factory: `src/factories/ServiceFactory`
