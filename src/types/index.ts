@@ -8,7 +8,7 @@ export interface Guest {
 export interface Room {
     id: string;
     number: string;
-    type: RoomType;
+    isDeluxe: boolean;
     price: number;
     isAvailable: boolean;
 }
@@ -16,7 +16,6 @@ export interface Room {
 export enum RoomType {
     STANDARD = 'standard',
     DELUXE = 'deluxe',
-    SUITE = 'suite',
 }
 
 export interface BookingDetails {
@@ -56,3 +55,5 @@ export interface BookingActionInfo {
     label: string;
     description: string;
 }
+
+export type PaymentProviderType = 'stripe' | 'paypal' | 'square';

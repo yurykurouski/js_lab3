@@ -1,50 +1,95 @@
-import { Room, RoomType } from '../types';
-import defaultRoomsData from '../../data/defaultRooms.json';
+import { logger } from './../helpers/logger';
+import { API_ROUTES } from '../constants';
+import { Room } from '../types';
+import { HttpService } from './HttpService';
 
 
 export class RoomService {
     private rooms: Map<string, Room> = new Map();
+    private isLoading: boolean = false;
+    private isInitialized: boolean = false;
 
-    constructor() {
-        this.initializeRooms();
+
+    private async fetchRoomsFromAPI(): Promise<Room[]> {
+        return await HttpService.get<Room[]>(API_ROUTES.AVAILABLE_ROOMS);
     }
 
-    private initializeRooms(): void {
-        const roomsCopy = JSON.parse(JSON.stringify(defaultRoomsData)) as Room[];
+    public async initializeRooms(): Promise<void> {
+        if (this.isInitialized || this.isLoading) {
+            return;
+        }
 
-        roomsCopy.forEach((room: Room) => {
-            this.rooms.set(room.id, room);
-        });
+        this.isLoading = true;
+
+        try {
+            const rooms = await this.fetchRoomsFromAPI();
+
+            this.rooms.clear();
+            rooms.forEach((room: Room) => {
+                this.rooms.set(room.id, room);
+            });
+
+            this.isInitialized = true;
+        } catch (error) {
+            logger.error('Failed to initialize rooms:', error);
+            throw error;
+        } finally {
+            this.isLoading = false;
+        }
     }
 
-    getAvailableRooms(): Room[] {
+    // public initializeWithDefaultRooms(defaultRooms: Room[]): void {
+    //     if (this.isInitialized) {
+    //         return;
+    //     }
+
+    //     this.rooms.clear();
+    //     defaultRooms.forEach((room: Room) => {
+    //         this.rooms.set(room.id, room);
+    //     });
+
+    //     this.isInitialized = true;
+
+    //     console.log(`🏨 Initialized ${defaultRooms.length} rooms from default data`);
+    // }
+
+    async getAvailableRooms(): Promise<Room[]> {
         return Array.from(this.rooms.values()).filter(room => room.isAvailable);
     }
 
-    getRoom(id: string): Room | undefined {
+    async getRoom(id: string): Promise<Room | undefined> {
         return this.rooms.get(id);
     }
 
-    reserveRoom(roomId: string): boolean {
-        const room = this.getRoom(roomId);
+    async reserveRoom(roomId: string): Promise<boolean> {
+        const room = this.rooms.get(roomId);
+
         if (room && room.isAvailable) {
             room.isAvailable = false;
-            console.log(`Room ${room.number} reserved successfully`);
+            logger.info(`Room ${room.number} reserved successfully`);
             return true;
         }
+
         return false;
     }
 
-    releaseRoom(roomId: string): void {
-        const room = this.getRoom(roomId);
+    async releaseRoom(roomId: string): Promise<void> {
+        const room = this.rooms.get(roomId);
+
         if (room) {
             room.isAvailable = true;
-            console.log(`Room ${room.number} is now available`);
+            logger.info(`Room ${room.number} is now available`);
         }
     }
 
-    getRoomsByType(type: RoomType): Room[] {
+    async getRoomsByType(isDeluxe: boolean): Promise<Room[]> {
         return Array.from(this.rooms.values())
-            .filter(room => room.type === type && room.isAvailable);
+            .filter(room => room.isDeluxe === isDeluxe && room.isAvailable);
+    }
+
+
+    get isReady(): boolean {
+        return this.isInitialized && !this.isLoading;
     }
 }
+

@@ -1,3 +1,6 @@
+import { logger } from './../helpers/logger';
+
+
 import { Guest } from '../types';
 
 
@@ -6,7 +9,7 @@ export class GuestService {
 
     registerGuest(guest: Guest): void {
         this.guests.set(guest.id, guest);
-        console.log(`Guest ${guest.name} registered successfully`);
+        logger.info(`\nGuest ${guest.name} registered successfully`);
     }
 
     getGuest(id: string): Guest | undefined {

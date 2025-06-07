@@ -1,0 +1,1 @@
+export { HotelBookingFacade } from './HotelBookingFacade';

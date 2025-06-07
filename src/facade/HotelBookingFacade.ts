@@ -3,7 +3,6 @@ import {
     Guest,
     PaymentInfo,
     Room,
-    RoomType,
     BookingAction,
     BookingActionInfo,
 } from '../types';
@@ -23,21 +22,27 @@ export class HotelBookingFacade {
     private notificationService: NotificationService;
     private bookingService: BookingService;
 
-    constructor() {
-        this.guestService = new GuestService();
-        this.roomService = new RoomService();
-        this.paymentService = new PaymentService();
-        this.notificationService = new NotificationService();
-        this.bookingService = new BookingService();
+    constructor(
+        guestService: GuestService,
+        roomService: RoomService,
+        paymentService: PaymentService,
+        notificationService: NotificationService,
+        bookingService: BookingService,
+    ) {
+        this.guestService = guestService;
+        this.roomService = roomService;
+        this.paymentService = paymentService;
+        this.notificationService = notificationService;
+        this.bookingService = bookingService;
     }
 
-    public bookRoom(
+    public async bookRoom(
         guest: Guest,
-        roomType: RoomType,
+        isDeluxe: boolean,
         checkInDate: Date,
         checkOutDate: Date,
         paymentInfo: PaymentInfo,
-    ): { success: boolean; bookingId?: string; message: string } {
+    ): Promise<{ success: boolean; bookingId?: string; message: string }> {
         try {
             console.log(`\n=== Starting booking process for ${guest.name} ===`);
 
@@ -45,9 +50,9 @@ export class HotelBookingFacade {
                 this.guestService.registerGuest(guest);
             }
 
-            const availableRooms = this.roomService.getRoomsByType(roomType);
+            const availableRooms = await this.roomService.getRoomsByType(isDeluxe);
             if (availableRooms.length === 0) {
-                return { success: false, message: `No ${roomType} rooms available` };
+                return { success: false, message: `No ${isDeluxe ? 'deluxe' : 'standard'} rooms available` };
             }
 
             const selectedRoom = availableRooms[0];
@@ -57,18 +62,23 @@ export class HotelBookingFacade {
             );
             const totalPrice = selectedRoom.price * nights;
 
-            const paymentSuccess =
-                this.paymentService.processPayment(totalPrice, paymentInfo.cardNumber);
+            const bookingId = this.bookingService.generateBookingId();
+
+            const paymentSuccess = this.paymentService.processPayment(
+                totalPrice,
+                paymentInfo.cardNumber,
+                bookingId,
+                guest.id,
+            );
             if (!paymentSuccess) {
                 return { success: false, message: 'Payment processing failed' };
             }
 
-            const reservationSuccess = this.roomService.reserveRoom(selectedRoom.id);
+            const reservationSuccess = await this.roomService.reserveRoom(selectedRoom.id);
             if (!reservationSuccess) {
                 return { success: false, message: 'Failed to reserve room' };
             }
 
-            const bookingId = this.bookingService.generateBookingId();
             const bookingDetails: BookingDetails = {
                 id: bookingId,
                 guestId: guest.id,
@@ -116,7 +126,7 @@ export class HotelBookingFacade {
         }
     }
 
-    public cancelBooking(bookingId: string): { success: boolean; message: string } {
+    public async cancelBooking(bookingId: string): Promise<{ success: boolean; message: string }> {
         const booking = this.bookingService.getBooking(bookingId);
         if (!booking) {
             return { success: false, message: 'Booking not found' };
@@ -126,7 +136,7 @@ export class HotelBookingFacade {
             const bookingDetails = booking.getDetails();
             booking.cancel();
 
-            this.roomService.releaseRoom(bookingDetails.roomId);
+            await this.roomService.releaseRoom(bookingDetails.roomId);
 
             this.paymentService.refundPayment(bookingDetails.totalPrice, bookingId);
 
@@ -155,7 +165,7 @@ export class HotelBookingFacade {
         }
     }
 
-    public checkOut(bookingId: string): { success: boolean; message: string } {
+    public async checkOut(bookingId: string): Promise<{ success: boolean; message: string }> {
         const booking = this.bookingService.getBooking(bookingId);
         if (!booking) {
             return { success: false, message: 'Booking not found' };
@@ -165,7 +175,7 @@ export class HotelBookingFacade {
             const bookingDetails = booking.getDetails();
             booking.checkOut();
 
-            this.roomService.releaseRoom(bookingDetails.roomId);
+            await this.roomService.releaseRoom(bookingDetails.roomId);
 
             return { success: true, message: 'Check-out completed successfully' };
         } catch (error) {
@@ -194,8 +204,8 @@ export class HotelBookingFacade {
         };
     }
 
-    public getAvailableRooms(): Room[] {
-        return this.roomService.getAvailableRooms();
+    public async getAvailableRooms(): Promise<Room[]> {
+        return await this.roomService.getAvailableRooms();
     }
 
     public getAllBookings(): { bookingId: string; details: BookingDetails; status: string }[] {
@@ -204,5 +214,9 @@ export class HotelBookingFacade {
             details: booking.getDetails(),
             status: booking.getStatus(),
         }));
+    }
+
+    public getRoomServiceForTesting(): RoomService {
+        return this.roomService;
     }
 }
