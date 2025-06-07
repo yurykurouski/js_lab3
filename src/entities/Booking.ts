@@ -1,4 +1,4 @@
-import { BookingDetails, BookingStatus, BookingAction, BookingActionInfo } from '../types';
+import { BookingDetails, BookingStatus, BookingAction, BookingActionInfo } from '@/types';
 import { BookingState, NewBookingState } from '@/state';
 import { BookingEventManager, BookingEventType } from '@/observers';
 

@@ -5,14 +5,14 @@ import {
     Room,
     BookingAction,
     BookingActionInfo,
-} from '../types';
+} from '@/types';
 import {
     GuestService,
     RoomService,
     PaymentService,
     NotificationService,
     BookingService,
-} from '../services';
+} from '@/services';
 
 
 export class HotelBookingFacade {
@@ -214,6 +214,16 @@ export class HotelBookingFacade {
             details: booking.getDetails(),
             status: booking.getStatus(),
         }));
+    }
+
+    public deleteBooking(bookingId: string): { success: boolean; message: string } {
+        const success = this.bookingService.deleteBooking(bookingId);
+
+        if (success) {
+            return { success: true, message: 'Booking deleted successfully' };
+        } else {
+            return { success: false, message: 'Booking not found or could not be deleted' };
+        }
     }
 
     public getRoomServiceForTesting(): RoomService {

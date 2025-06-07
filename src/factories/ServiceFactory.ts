@@ -26,10 +26,6 @@ export class ServiceFactory {
         localMode: false,
     };
 
-
-    /**
-      Initialize all services
-     */
     public static async initializeServices(
         config?: ServiceFactoryConfig,
     ): Promise<HotelBookingFacade> {
@@ -57,9 +53,6 @@ export class ServiceFactory {
         }
     }
 
-    /**
-     * Create all service instances
-     */
     private static createServiceInstances() {
         return {
             guestService: new GuestService(),
@@ -97,14 +90,12 @@ export class ServiceFactory {
         try {
             const eventManager = BookingEventManager.getInstance();
 
-            // Create and register observers
             const notificationObserver = new NotificationObserver(notificationService);
             const auditLogObserver = new AuditLogObserver();
 
             eventManager.subscribe(notificationObserver);
             eventManager.subscribe(auditLogObserver);
 
-            // Conditionally add metrics observer
             if (config.enableMetrics) {
                 const metricsObserver = new MetricsObserver();
                 eventManager.subscribe(metricsObserver);
@@ -137,9 +128,6 @@ export class ServiceFactory {
         }
     }
 
-    /**
-     * Handle initialization errors with proper logging
-     */
     private static handleInitializationError(error: unknown): void {
         if (error instanceof ServiceInitializationError) {
             logger.error(`Service initialization failed in ${error.serviceName}:`, error.message);
