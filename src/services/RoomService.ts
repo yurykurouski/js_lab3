@@ -1,6 +1,6 @@
-import { logger } from './../helpers/logger';
-import { API_ROUTES } from '../constants';
-import { Room } from '../types';
+import { logger } from '@/helpers/logger';
+import { API_ROUTES } from '@/constants';
+import { Room } from '@/types';
 import { HttpService } from './HttpService';
 
 
@@ -38,20 +38,32 @@ export class RoomService {
         }
     }
 
-    // public initializeWithDefaultRooms(defaultRooms: Room[]): void {
-    //     if (this.isInitialized) {
-    //         return;
-    //     }
+    public async initializeWithDefaultRooms(): Promise<void> {
+        if (this.isInitialized) {
+            return;
+        }
 
-    //     this.rooms.clear();
-    //     defaultRooms.forEach((room: Room) => {
-    //         this.rooms.set(room.id, room);
-    //     });
+        try {
+            const fs = await import('fs/promises');
+            const path = await import('path');
 
-    //     this.isInitialized = true;
+            const defaultRoomsPath = path.join(process.cwd(), 'data', 'defaultRooms.json');
+            const defaultRoomsData = await fs.readFile(defaultRoomsPath, 'utf-8');
+            const defaultRooms = JSON.parse(defaultRoomsData) as Room[];
 
-    //     console.log(`🏨 Initialized ${defaultRooms.length} rooms from default data`);
-    // }
+            this.rooms.clear();
+            defaultRooms.forEach((room: Room) => {
+                this.rooms.set(room.id, room);
+            });
+
+            this.isInitialized = true;
+
+            logger.info(`🏨 Initialized ${defaultRooms.length} rooms from local data`);
+        } catch (error) {
+            logger.error('Failed to initialize rooms from local data:', error);
+            throw error;
+        }
+    }
 
     async getAvailableRooms(): Promise<Room[]> {
         return Array.from(this.rooms.values()).filter(room => room.isAvailable);
