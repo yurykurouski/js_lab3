@@ -1,7 +1,37 @@
 [
-    { "id": "1", "number": "101", "type": "standard", "price": 100, "isAvailable": true },
-    { "id": "2", "number": "102", "type": "standard", "price": 100, "isAvailable": true },
-    { "id": "3", "number": "201", "type": "deluxe", "price": 200, "isAvailable": true },
-    { "id": "4", "number": "202", "type": "deluxe", "price": 200, "isAvailable": true },
-    { "id": "5", "number": "301", "type": "suite", "price": 500, "isAvailable": true }
+    {
+        "id": "1",
+        "number": "101",
+        "isDeluxe": false,
+        "price": 100,
+        "isAvailable": true
+    },
+    {
+        "id": "2",
+        "number": "102",
+        "isDeluxe": false,
+        "price": 100,
+        "isAvailable": true
+    },
+    {
+        "id": "3",
+        "number": "201",
+        "isDeluxe": true,
+        "price": 200,
+        "isAvailable": true
+    },
+    {
+        "id": "4",
+        "number": "202",
+        "isDeluxe": true,
+        "price": 200,
+        "isAvailable": true
+    },
+    {
+        "id": "5",
+        "number": "301",
+        "isDeluxe": false,
+        "price": 500,
+        "isAvailable": true
+    }
 ]
