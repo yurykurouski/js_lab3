@@ -248,8 +248,6 @@ describe('Adapter Pattern', () => {
         });
 
         it('should try fallback providers on primary failure', async () => {
-            // This test relies on the random failure mechanism
-            // We'll test the structure even if primary succeeds
             const result = await factory.processPaymentWithFallback(
                 100.00,
                 '1234567890123456',

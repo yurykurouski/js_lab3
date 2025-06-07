@@ -7,7 +7,7 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
     let sampleGuest: Guest;
 
     beforeEach(async () => {
-        facade = await ServiceFactory.initializeServices();
+        facade = await ServiceFactory.initializeServices({ localMode: true });
         sampleGuest = {
             id: 'test_guest_001',
             name: 'Test Guest',
@@ -18,11 +18,12 @@ describe('Facade Pattern - Hotel Booking Facade', () => {
 
     test('should get available rooms', async () => {
         const rooms = await facade.getAvailableRooms();
-        // expect(rooms.length).toBeGreaterThan(0);
-        // expect(rooms[0]).toHaveProperty('id');
-        // expect(rooms[0]).toHaveProperty('number');
-        // expect(rooms[0]).toHaveProperty('type');
-        // expect(rooms[0]).toHaveProperty('price');
+        expect(rooms.length).toBeGreaterThan(0);
+        expect(rooms[0]).toHaveProperty('id');
+        expect(rooms[0]).toHaveProperty('number');
+        expect(rooms[0]).toHaveProperty('isDeluxe');
+        expect(rooms[0]).toHaveProperty('isAvailable');
+        expect(rooms[0]).toHaveProperty('price');
         expect(rooms[0].isAvailable).toBe(true);
     });
 

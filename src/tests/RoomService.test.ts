@@ -6,7 +6,7 @@ describe('RoomService', () => {
 
     describe('initialization', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
@@ -15,7 +15,7 @@ describe('RoomService', () => {
             expect(availableRooms).toHaveLength(5);
 
             const standardRooms = availableRooms.filter(room => room.isDeluxe === false);
-            expect(standardRooms).toHaveLength(2);
+            expect(standardRooms).toHaveLength(3);
             expect(standardRooms[0].number).toBe('101');
             expect(standardRooms[1].number).toBe('102');
 
@@ -35,7 +35,7 @@ describe('RoomService', () => {
 
     describe('getAvailableRooms', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
@@ -55,7 +55,7 @@ describe('RoomService', () => {
 
     describe('getRoom', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
@@ -74,7 +74,7 @@ describe('RoomService', () => {
 
     describe('reserveRoom', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
@@ -107,7 +107,7 @@ describe('RoomService', () => {
 
     describe('releaseRoom', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
             await roomService.reserveRoom('1');
         });
@@ -139,13 +139,13 @@ describe('RoomService', () => {
 
     describe('getRoomsByType', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
         it('should return standard rooms', async () => {
             const standardRooms = await roomService.getRoomsByType(false);
-            expect(standardRooms).toHaveLength(2);
+            expect(standardRooms).toHaveLength(3);
             standardRooms.forEach(room => {
                 expect(room.isDeluxe).toBe(false);
                 expect(room.isAvailable).toBe(true);
@@ -166,7 +166,7 @@ describe('RoomService', () => {
             await roomService.reserveRoom('1');
 
             const standardRooms = await roomService.getRoomsByType(false);
-            expect(standardRooms).toHaveLength(1);
+            expect(standardRooms).toHaveLength(2);
             expect(standardRooms[0].id).toBe('2');
         });
 
@@ -175,13 +175,13 @@ describe('RoomService', () => {
             await roomService.reserveRoom('2');
 
             const standardRooms = await roomService.getRoomsByType(false);
-            expect(standardRooms).toHaveLength(0);
+            expect(standardRooms).toHaveLength(1);
         });
     });
 
     describe('room pricing', () => {
         beforeEach(async () => {
-            const facade = await ServiceFactory.initializeServices();
+            const facade = await ServiceFactory.initializeServices({ localMode: true });
             roomService = facade.getRoomServiceForTesting();
         });
 
