@@ -1,3 +1,3 @@
 
-export { BookingState } from './BookingState';
-export { NewBookingState } from './NewBookingState';
+export * from './BookingState';
+export * from './BookingState/states';

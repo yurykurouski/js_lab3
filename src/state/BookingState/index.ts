@@ -1,5 +1,5 @@
-import { BookingStatus, BookingAction, BookingActionInfo } from '../types';
-import { Booking } from '../entities';
+import { BookingStatus, BookingAction, BookingActionInfo } from '@/types';
+import { Booking } from '@/entities';
 
 
 export abstract class BookingState {

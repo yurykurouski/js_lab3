@@ -1,6 +1,6 @@
-import { BookingStatus, BookingAction, BookingActionInfo } from '../types';
-import { Booking } from '../entities';
-import { BookingState } from './BookingState';
+import { BookingStatus, BookingAction, BookingActionInfo } from '@/types';
+import { Booking } from '@/entities';
+import { BookingState } from '@/state/BookingState';
 import { CheckedOutBookingState } from './CheckedOutBookingState';
 
 
