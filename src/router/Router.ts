@@ -36,9 +36,6 @@ export class Router {
     public get routes(): Route[] {
         return this._routeManager.routes;
     }
-    public get facade(): HotelBookingFacade {
-        return this._facade;
-    }
 
     private _setupRoutes(): void {
         RouteSetup(this._routeManager, this._facade);
