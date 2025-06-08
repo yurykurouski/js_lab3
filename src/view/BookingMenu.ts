@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import { HotelBookingFacade } from '../facade/HotelBookingFacade';
-import { Guest, RoomType, PaymentInfo, BookingAction } from '../types';
+import { Guest, PaymentInfo, BookingAction, RoomType } from '../types';
 import { ExitFromAppError } from '../exceptions';
 import { generateUUID } from '../helpers';
 
@@ -9,15 +9,13 @@ export class BookingMenu {
     private facade: HotelBookingFacade;
     private currentGuest: Guest | null = null;
 
-    constructor() {
-        this.facade = new HotelBookingFacade();
+    constructor(facade: HotelBookingFacade) {
+        this.facade = facade;
     }
 
     public async start(): Promise<void> {
-        console.log('🏨 Interactive Hotel Booking System - Facade & State Patterns\n');
-        console.log('='.repeat(70));
-
         let running = true;
+
         while (running) {
             try {
                 await this.showMainMenu();
@@ -81,13 +79,13 @@ export class BookingMenu {
 
     private async showAvailableRooms(): Promise<void> {
         console.log('\n📋 Available Rooms:');
-        const rooms = this.facade.getAvailableRooms();
+        const rooms = await this.facade.getAvailableRooms();
 
         if (rooms.length === 0) {
             console.log('  No rooms available at the moment.');
         } else {
             rooms.forEach(room => {
-                console.log(`  • Room ${room.number} (${room.type.toUpperCase()}) - $${room.price}/night`);
+                console.log(`  • Room ${room.number} (${room.isDeluxe ? RoomType.DELUXE : RoomType.STANDARD}) - $${room.price}/night`);
             });
         }
 
@@ -148,7 +146,6 @@ export class BookingMenu {
                 choices: [
                     { name: 'Standard Room', value: RoomType.STANDARD },
                     { name: 'Deluxe Room', value: RoomType.DELUXE },
-                    { name: 'Suite', value: RoomType.SUITE },
                 ],
             },
         ]);
@@ -179,9 +176,9 @@ export class BookingMenu {
 
         const paymentInfo = await this.getPaymentInfo();
 
-        const bookingResult = this.facade.bookRoom(
+        const bookingResult = await this.facade.bookRoom(
             this.currentGuest,
-            roomType,
+            roomType === RoomType.DELUXE,
             new Date(checkInDate),
             new Date(checkOutDate),
             paymentInfo,
@@ -320,13 +317,13 @@ export class BookingMenu {
                 result = this.facade.confirmBooking(bookingId);
                 break;
             case BookingAction.CANCEL:
-                result = this.facade.cancelBooking(bookingId);
+                result = await this.facade.cancelBooking(bookingId);
                 break;
             case BookingAction.CHECK_IN:
                 result = this.facade.checkIn(bookingId);
                 break;
             case BookingAction.CHECK_OUT:
-                result = this.facade.checkOut(bookingId);
+                result = await this.facade.checkOut(bookingId);
                 break;
             default:
                 console.log('❌ Unknown action');
