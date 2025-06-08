@@ -7,7 +7,6 @@
     "start:local": "ts-node -r tsconfig-paths/register src/index.ts --localMode",
     "start:dev": "ts-node -r tsconfig-paths/register src/index.ts --localMode",
     "start:watch": "tsc --watch && ts-node src/index.ts",
-    "server": "ts-node src/server.ts",
     "server:watch": "ts-node --watch src/server.ts",
     "build": "tsc",
     "test": "jest",
