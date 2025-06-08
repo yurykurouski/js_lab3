@@ -1,4 +1,4 @@
-import { PaymentProviderType } from '@/types';
+import { GuestService, RoomService, PaymentService, NotificationService, BookingService } from '@/services';
 
 export interface ServiceFactoryConfig {
     enableObservers?: boolean;
@@ -7,8 +7,10 @@ export interface ServiceFactoryConfig {
     localMode?: boolean;
 }
 
-export interface PaymentAdapterConfig {
-    defaultProvider: PaymentProviderType;
-    fallbackProviders: PaymentProviderType[];
-    enableFallback: boolean;
+export interface ServiceCollection {
+    guestService: GuestService;
+    roomService: RoomService;
+    paymentService: PaymentService;
+    notificationService: NotificationService;
+    bookingService: BookingService;
 }

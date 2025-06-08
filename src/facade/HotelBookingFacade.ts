@@ -13,9 +13,10 @@ import {
     NotificationService,
     BookingService,
 } from '@/services';
+import { BookingFacade } from './types';
 
 
-export class HotelBookingFacade {
+export class HotelBookingFacade implements BookingFacade {
     private guestService: GuestService;
     private roomService: RoomService;
     private paymentService: PaymentService;
