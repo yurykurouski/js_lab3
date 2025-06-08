@@ -23,17 +23,16 @@
       "@/facade/*": ["./src/facade/*"],
       "@/factories/*": ["./src/factories/*"],
       "@/helpers/*": ["./src/helpers/*"],
-      "@/patterns/*": ["./src/patterns/*"],
       "@/routes/*": ["./src/routes/*"],
       "@/services/*": ["./src/services/*"],
       "@/state/*": ["./src/state/*"],
       "@/types/*": ["./src/types/*"],
       "@/view/*": ["./src/view/*"],
       "@/tests/*": ["./src/tests/*"],
-      "@/adapters/*": ["./src/adapters/*"],
-      "@/observers/*": ["./src/observers/*"]
-
-    }
+      "@/observers/*": ["./src/observers/*"],
+      "@/router/*": ["./src/router/*"]
+    },
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*"
