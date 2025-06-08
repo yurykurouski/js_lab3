@@ -7,4 +7,3 @@ export interface Route {
     path: string;
     handler: (req: http.IncomingMessage, res: http.ServerResponse) => void;
 }
-

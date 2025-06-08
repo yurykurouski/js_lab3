@@ -5,11 +5,11 @@ import { HttpMethod } from '@/types';
 import { HttpServer } from './HttpServer';
 import { RouteManager } from './RouteManager';
 import { RequestHandler } from './RequestHandler';
-import { DefaultRoutes } from './DefaultRoutes';
+import { RouteSetup } from '@/routes';
 
 
 export class Router {
-    private static _instance: Router;
+    private static _instance: Router | undefined;
     private readonly _httpServer: HttpServer;
     private readonly _routeManager: RouteManager;
     private readonly _requestHandler: RequestHandler;
@@ -24,23 +24,24 @@ export class Router {
             this._requestHandler.handle.bind(this._requestHandler),
         );
 
-        this.setupDefaultRoutes();
+        this._setupRoutes();
     }
 
     public get server(): http.Server {
         return this._httpServer.server;
     }
-
     public get port(): number {
         return this._httpServer.port;
     }
-
     public get routes(): Route[] {
         return this._routeManager.routes;
     }
-
     public get facade(): HotelBookingFacade {
         return this._facade;
+    }
+
+    private _setupRoutes(): void {
+        RouteSetup(this._routeManager, this._facade);
     }
 
     public static getInstance(): Router {
@@ -67,9 +68,6 @@ export class Router {
         this._routeManager.addRoute(method, path, handler);
     }
 
-    private setupDefaultRoutes(): void {
-        DefaultRoutes.setup(this._routeManager);
-    }
 
     public start(): void {
         this._httpServer.start();
@@ -77,5 +75,12 @@ export class Router {
 
     public stop(): void {
         this._httpServer.stop();
+    }
+
+    /**
+     * Reset the singleton instance for testing purposes
+     */
+    public static resetInstance(): void {
+        Router._instance = undefined;
     }
 }

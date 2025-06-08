@@ -14,7 +14,31 @@ export class RouteManager {
     }
 
     public findRoute(method: HttpMethod, path: string): Route | undefined {
-        return this._routes.find(r => r.method === method && r.path === path);
+        return this._routes.find(r => {
+            if (r.method !== method) return false;
+
+            if (r.path === path) return true;
+
+            return this.matchParameterizedRoute(r.path, path);
+        });
+    }
+
+    private matchParameterizedRoute(routePath: string, requestPath: string): boolean {
+        const routeParts = routePath.split('/');
+        const requestParts = requestPath.split('/');
+
+        if (routeParts.length !== requestParts.length) return false;
+
+        for (let i = 0; i < routeParts.length; i++) {
+            const routePart = routeParts[i];
+            const requestPart = requestParts[i];
+
+            if (routePart.startsWith(':')) continue;
+
+            if (routePart !== requestPart) return false;
+        }
+
+        return true;
     }
 
     public get routes(): Route[] {
