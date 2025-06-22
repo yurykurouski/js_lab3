@@ -1,19 +1,19 @@
 import { logger } from '../helpers/logger';
 
 export class NotificationService {
-    sendBookingConfirmation(email: string, bookingId: string): void {
-        logger.info(`Booking confirmation sent to ${email} for booking ${bookingId}`);
+    sendBookingConfirmation(bookingId: string): void {
+        logger.info(`Booking confirmation for booking ${bookingId} sent is sent`);
     }
 
-    sendCancellationNotice(email: string, bookingId: string): void {
-        logger.info(`Booking cancellation notice sent to ${email} for booking ${bookingId}`);
+    sendCancellationNotice(bookingId: string): void {
+        logger.info(`Booking cancellation notice for booking ${bookingId} is sent `);
     }
 
-    sendCheckInReminder(email: string, bookingId: string): void {
-        logger.info(`Check-in reminder sent to ${email} for booking ${bookingId}`);
+    sendCheckInReminder(bookingId: string): void {
+        logger.info(`Check-in reminder for booking ${bookingId} is sent`);
     }
 
-    sendReceiptEmail(email: string, amount: number): void {
-        logger.info(`Receipt for $${amount} sent to ${email}`);
+    sendReceiptEmail(amount: number): void {
+        logger.info(`Receipt for $${amount} is sent`);
     }
 }
