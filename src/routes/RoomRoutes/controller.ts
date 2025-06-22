@@ -13,7 +13,7 @@ export class RoomRoutesController extends BaseRouteController<RoomRoutesService>
     setup(routeManager: RouteManager, service: RoomRoutesService): void {
         routeManager.addRoute(HttpMethod.GET, '/api/rooms', service.getAllRooms);
         routeManager.addRoute(HttpMethod.GET, '/api/rooms/type/:type', service.getRoomsByType);
-        routeManager.addRoute(HttpMethod.GET, '/api/rooms/:id', service.getRoomById);
+        routeManager.addRoute(HttpMethod.GET, '/api/room', service.getRoomById);
     }
 }
 

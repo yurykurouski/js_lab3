@@ -5,9 +5,21 @@ export abstract class BaseRouteService {
     constructor(protected service?: BookingFacade) { }
 
     public extractIdFromPath(url: string): string | null {
-        const pathOnly = url.split('?')[0];
-        const match = pathOnly.match(/\/([^/]+)$/);
-        return match ? match[1] : null;
+        const queryIndex = url.indexOf('?');
+        if (queryIndex === -1) {
+            return null;
+        }
+
+        const queryString = url.substring(queryIndex + 1);
+
+        const params = new URLSearchParams(queryString);
+        const id = params.get('id');
+
+        if (id) {
+            return id;
+        }
+
+        return null;
     }
 
     public extractParamFromPath(url: string, paramName: string): string | null {

@@ -16,7 +16,7 @@ export class ResponseHelper {
     }
 
     public static sendError(res: http.ServerResponse, statusCode: number, message: string): void {
-        this.sendJSON(res, statusCode, { error: message });
+        this.sendJSON(res, statusCode, { message });
     }
 
     public static setupCORSHeaders(res: http.ServerResponse): void {

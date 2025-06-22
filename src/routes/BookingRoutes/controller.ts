@@ -11,9 +11,9 @@ export class BookingRoutesController extends BaseRouteController<BookingRoutesSe
 
     setup(routeManager: RouteManager, service: BookingRoutesService): void {
         routeManager.addRoute(HttpMethod.GET, '/api/bookings', service.getAllBookings);
-        routeManager.addRoute(HttpMethod.GET, '/api/bookings/:id', service.getBookingById);
+        routeManager.addRoute(HttpMethod.GET, '/api/booking', service.getBookingById);
         routeManager.addRoute(HttpMethod.POST, '/api/bookings', service.createBooking);
-        routeManager.addRoute(HttpMethod.DELETE, '/api/bookings/:id', service.deleteBooking);
-        routeManager.addRoute(HttpMethod.PUT, '/api/bookings/:id/confirm', service.confirmBooking);
+        routeManager.addRoute(HttpMethod.DELETE, '/api/bookings', service.deleteBooking);
+        routeManager.addRoute(HttpMethod.PUT, '/api/bookings/confirm', service.confirmBooking);
     }
 }
