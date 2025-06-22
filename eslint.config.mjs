@@ -4,9 +4,9 @@ import stylistic from '@stylistic/eslint-plugin';
 
 export default tseslint.config(
     js.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
     {
         files: ['**/*.ts', '**/*.tsx'],
+        extends: [...tseslint.configs.recommendedTypeChecked],
         languageOptions: {
             parserOptions: {
                 project: true,
@@ -68,18 +68,38 @@ export default tseslint.config(
         languageOptions: {
             ecmaVersion: 2022,
             sourceType: 'module',
+            globals: {
+                // Browser globals
+                document: 'readonly',
+                window: 'readonly',
+                console: 'readonly',
+                fetch: 'readonly',
+                FormData: 'readonly',
+                confirm: 'readonly',
+                setTimeout: 'readonly',
+                event: 'readonly',
+                error: 'readonly',
+            },
         },
         plugins: {
             '@stylistic': stylistic,
         },
         rules: {
             // Stylistic rules for JavaScript files
-            '@stylistic/indent': ['error', 2],
+            '@stylistic/indent': ['error', 4], // Match TypeScript indentation
             '@stylistic/quotes': ['error', 'single'],
             '@stylistic/semi': ['error', 'always'],
             '@stylistic/comma-dangle': ['error', 'always-multiline'],
             '@stylistic/object-curly-spacing': ['error', 'always'],
             '@stylistic/array-bracket-spacing': ['error', 'never'],
+            'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        },
+    },
+    {
+        files: ['**/*.test.ts', '**/*.test.js', '**/*.spec.ts', '**/*.spec.js'],
+        rules: {
+            '@typescript-eslint/no-unused-vars': 'off',
+            'no-unused-vars': 'off',
         },
     },
     {
