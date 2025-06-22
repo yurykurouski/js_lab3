@@ -37,7 +37,6 @@ export class HotelBookingFacade implements BookingFacade {
         try {
             console.log('\n=== Starting booking process  ===');
 
-
             const availableRooms = await this.roomService.getRoomsByType(isDeluxe);
             if (availableRooms.length === 0) {
                 return { success: false, message: `No ${isDeluxe ? 'deluxe' : 'standard'} rooms available` };
@@ -52,9 +51,14 @@ export class HotelBookingFacade implements BookingFacade {
 
             const bookingId = this.bookingService.generateBookingId();
 
-
             const reservationSuccess = await this.roomService.reserveRoom(selectedRoom.id);
-            if (!reservationSuccess) {
+            if (
+                !reservationSuccess ||
+                !paymentInfo.cardNumber ||
+                !paymentInfo.expiryDate ||
+                !paymentInfo.cvv ||
+                !paymentInfo.cardHolderName
+            ) {
                 return { success: false, message: 'Failed to reserve room' };
             }
 
