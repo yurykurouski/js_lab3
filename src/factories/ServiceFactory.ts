@@ -2,7 +2,6 @@ import { logger } from '@/helpers/logger';
 import { ServiceInitializationError } from '@/exceptions/ServiceInitializationError';
 import {
     RoomService,
-    PaymentService,
     NotificationService,
     BookingService,
 } from '@/services';
@@ -11,7 +10,6 @@ import { LoadingIndicator } from '@/helpers';
 import {
     BookingEventManager,
     NotificationObserver,
-    MetricsObserver,
 } from '@/observers';
 import { ServiceCollection, ServiceFactoryConfig } from './types';
 
@@ -19,7 +17,6 @@ import { ServiceCollection, ServiceFactoryConfig } from './types';
 export class ServiceFactory {
     private static readonly DEFAULT_CONFIG: Required<ServiceFactoryConfig> = {
         enableObservers: true,
-        enableMetrics: true,
         initializationTimeout: 30000,
         localMode: false,
     };
@@ -37,7 +34,7 @@ export class ServiceFactory {
 
             await this.initializeAsyncServices(services, finalConfig);
 
-            this.setupObserver(services.notificationService, finalConfig);
+            this.setupObserver(services.notificationService);
 
             const facade = this.createFacadeInstance(services);
 
@@ -54,7 +51,6 @@ export class ServiceFactory {
     private static createServiceInstances() {
         return {
             roomService: new RoomService(),
-            paymentService: new PaymentService(),
             notificationService: new NotificationService(),
             bookingService: new BookingService(),
         };
@@ -82,7 +78,6 @@ export class ServiceFactory {
     // ??
     private static setupObserver(
         notificationService: NotificationService,
-        config: Required<ServiceFactoryConfig>,
     ): void {
         try {
             const eventManager = BookingEventManager.getInstance();
@@ -91,10 +86,6 @@ export class ServiceFactory {
 
             eventManager.subscribe(notificationObserver);
 
-            if (config.enableMetrics) {
-                const metricsObserver = new MetricsObserver();
-                eventManager.subscribe(metricsObserver);
-            }
         } catch (error) {
             throw new ServiceInitializationError(
                 'Failed to setup observer pattern',
@@ -109,7 +100,6 @@ export class ServiceFactory {
         try {
             return new HotelBookingFacade(
                 services.roomService,
-                services.paymentService,
                 services.notificationService,
                 services.bookingService,
             );
@@ -139,10 +129,8 @@ export class ServiceFactory {
             const eventManager = BookingEventManager.getInstance();
 
             const notificationObserver = new NotificationObserver(notificationService);
-            const metricsObserver = new MetricsObserver();
 
             eventManager.subscribe(notificationObserver);
-            eventManager.subscribe(metricsObserver);
         } catch (error) {
             throw new ServiceInitializationError(
                 'Failed to initialize observers',

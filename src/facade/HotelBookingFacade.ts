@@ -7,7 +7,6 @@ import {
 } from '@/types';
 import {
     RoomService,
-    PaymentService,
     NotificationService,
     BookingService,
 } from '@/services';
@@ -16,18 +15,15 @@ import { BookingFacade } from './types';
 
 export class HotelBookingFacade implements BookingFacade {
     private roomService: RoomService;
-    private paymentService: PaymentService;
     private notificationService: NotificationService;
     private bookingService: BookingService;
 
     constructor(
         roomService: RoomService,
-        paymentService: PaymentService,
         notificationService: NotificationService,
         bookingService: BookingService,
     ) {
         this.roomService = roomService;
-        this.paymentService = paymentService;
         this.notificationService = notificationService;
         this.bookingService = bookingService;
     }
@@ -56,14 +52,6 @@ export class HotelBookingFacade implements BookingFacade {
 
             const bookingId = this.bookingService.generateBookingId();
 
-            const paymentSuccess = this.paymentService.processPayment(
-                totalPrice,
-                paymentInfo.cardNumber,
-                bookingId,
-            );
-            if (!paymentSuccess) {
-                return { success: false, message: 'Payment processing failed' };
-            }
 
             const reservationSuccess = await this.roomService.reserveRoom(selectedRoom.id);
             if (!reservationSuccess) {
@@ -123,8 +111,6 @@ export class HotelBookingFacade implements BookingFacade {
             booking.cancel();
 
             await this.roomService.releaseRoom(bookingDetails.roomId);
-
-            this.paymentService.refundPayment(bookingDetails.totalPrice, bookingId);
 
             this.notificationService.sendCancellationNotice(bookingId);
 

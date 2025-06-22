@@ -28,16 +28,10 @@ export interface BookingStateChangeEvent extends BookingEvent {
     bookingDetails: BookingDetails;
 }
 
-export interface PaymentEvent extends BookingEvent {
-    type: BookingEventType.PAYMENT_PROCESSED;
-    amount: number;
-    paymentMethod: string;
-}
-
 export interface RoomEvent extends BookingEvent {
     type: BookingEventType.ROOM_RESERVED | BookingEventType.ROOM_RELEASED;
     roomId: string;
     roomType: string;
 }
 
-export type BookingSystemEvent = BookingStateChangeEvent | PaymentEvent | RoomEvent;
+export type BookingSystemEvent = BookingStateChangeEvent | RoomEvent;
