@@ -42,6 +42,15 @@ export class HotelBookingFacade implements BookingFacade {
                 return { success: false, message: `No ${isDeluxe ? 'deluxe' : 'standard'} rooms available` };
             }
 
+            if (
+                !paymentInfo.cardNumber ||
+                !paymentInfo.expiryDate ||
+                !paymentInfo.cvv ||
+                !paymentInfo.cardHolderName
+            ) {
+                return { success: false, message: 'Failed to reserve room' };
+            }
+
             const selectedRoom = availableRooms[0];
 
             const nights = Math.ceil(
@@ -52,13 +61,8 @@ export class HotelBookingFacade implements BookingFacade {
             const bookingId = this.bookingService.generateBookingId();
 
             const reservationSuccess = await this.roomService.reserveRoom(selectedRoom.id);
-            if (
-                !reservationSuccess ||
-                !paymentInfo.cardNumber ||
-                !paymentInfo.expiryDate ||
-                !paymentInfo.cvv ||
-                !paymentInfo.cardHolderName
-            ) {
+
+            if (!reservationSuccess) {
                 return { success: false, message: 'Failed to reserve room' };
             }
 
