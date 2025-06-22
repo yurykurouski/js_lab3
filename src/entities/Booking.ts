@@ -41,7 +41,7 @@ export class Booking {
                 eventType = BookingEventType.GUEST_CHECKED_OUT;
                 break;
             default:
-                return; // No event for unknown states
+                return;
         }
 
         this.eventManager.publishBookingStateChange(
