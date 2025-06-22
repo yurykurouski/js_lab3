@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { ResponseHelper } from '@/router';
 import { CatchServerError } from '@/decorators/CatchServerError';
+import { Log } from '@/decorators';
 import { BaseRouteService } from '../BaseRouteService';
 
 
@@ -9,6 +10,7 @@ export class DefaultRoutesService extends BaseRouteService {
         super();
     }
 
+    @Log
     @CatchServerError
     getStatus = async (_: IncomingMessage, res: ServerResponse): Promise<void> => {
         const statusData = {
@@ -18,6 +20,8 @@ export class DefaultRoutesService extends BaseRouteService {
         };
         ResponseHelper.sendJSON(res, 200, statusData);
     };
+
+    @Log
     @CatchServerError
     getHealth = async (_: IncomingMessage, res: ServerResponse): Promise<void> => {
         const healthData = {

@@ -2,6 +2,7 @@ import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
 import { ResponseHelper } from '@/router';
 import { CatchServerError } from '@/decorators/CatchServerError';
+import { Log } from '@/decorators/Log';
 import { BookingRequestData } from './types';
 import { BaseRouteService } from '../BaseRouteService';
 import { BookingFacade } from '@/facade/types';
@@ -12,14 +13,16 @@ export class BookingRoutesService extends BaseRouteService {
         super(facade);
     }
 
+    @Log
     @CatchServerError
     getAllBookings = async (_: IncomingMessage, res: ServerResponse): Promise<void> => {
         const statusData = this.facade.getAllBookings();
         ResponseHelper.sendJSON(res, 200, statusData);
     };
 
+    @Log
     @CatchServerError
-    getBookingById = (req: http.IncomingMessage, res: http.ServerResponse) => {
+    getBookingById = async (req: http.IncomingMessage, res: http.ServerResponse) => {
         const bookingId = this.extractIdFromPath(req.url || '');
 
         if (!bookingId) {
@@ -38,15 +41,10 @@ export class BookingRoutesService extends BaseRouteService {
         }
     };
 
+    @Log
     @CatchServerError
     createBooking = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const bookingData = await this.parseRequestBody<BookingRequestData>(req);
-
-        if (!bookingData.checkIn || !bookingData.checkOut || !bookingData.payment) {
-            ResponseHelper.sendError(res, 400, 'Missing required fields: checkIn, checkOut, payment');
-            return;
-        }
-
 
         const booking = await this.facade.bookRoom(
             Boolean(bookingData.isDeluxe),
@@ -65,6 +63,7 @@ export class BookingRoutesService extends BaseRouteService {
         }
     };
 
+    @Log
     @CatchServerError
     deleteBooking = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const bookingId = this.extractIdFromPath(req.url || '');
@@ -85,6 +84,7 @@ export class BookingRoutesService extends BaseRouteService {
 
     };
 
+    @Log
     @CatchServerError
     confirmBooking = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const bookingId = this.extractIdFromPath(req.url || '');

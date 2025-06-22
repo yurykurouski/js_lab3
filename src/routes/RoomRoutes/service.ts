@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { ResponseHelper } from '@/router';
 import { CatchServerError } from '@/decorators/CatchServerError';
+import { Log } from '@/decorators';
 import { BaseRouteService } from '../BaseRouteService';
 import { BookingFacade } from '@/facade/types';
 
@@ -10,6 +11,7 @@ export class RoomRoutesService extends BaseRouteService {
         super(facade);
     }
 
+    @Log
     @CatchServerError
     getAllRooms = async (_: IncomingMessage, res: ServerResponse): Promise<void> => {
         const rooms = await this.facade.getAvailableRooms();
@@ -19,6 +21,7 @@ export class RoomRoutesService extends BaseRouteService {
         });
     };
 
+    @Log
     @CatchServerError
     getRoomsByType = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const roomType = this.extractTypeFromPath(req.url || '');
@@ -40,6 +43,7 @@ export class RoomRoutesService extends BaseRouteService {
         });
     };
 
+    @Log
     @CatchServerError
     getRoomById = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const roomId = this.extractIdFromPath(req.url || '');
