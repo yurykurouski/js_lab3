@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts --watch --inspect",
     "start:local": "ts-node -r tsconfig-paths/register src/index.ts --localMode",
     "start:dev": "ts-node -r tsconfig-paths/register src/index.ts --localMode",
     "start:watch": "tsc --watch && ts-node src/index.ts",
