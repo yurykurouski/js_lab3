@@ -8,7 +8,6 @@ describe('State Pattern - Booking State Management', () => {
     beforeEach(() => {
         bookingDetails = {
             id: 'TEST_001',
-            guestId: 'guest_001',
             roomId: 'room_001',
             checkInDate: new Date('2025-06-15'),
             checkOutDate: new Date('2025-06-18'),

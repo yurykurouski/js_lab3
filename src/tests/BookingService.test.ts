@@ -9,7 +9,6 @@ describe('BookingService', () => {
         bookingService = new BookingService();
         mockBookingDetails = {
             id: 'TEST001',
-            guestId: 'guest1',
             roomId: 'room1',
             checkInDate: new Date('2024-01-15'),
             checkOutDate: new Date('2024-01-18'),
@@ -79,7 +78,7 @@ describe('BookingService', () => {
 
         it('should return all bookings', () => {
             const booking1Details = { ...mockBookingDetails, id: 'TEST001' };
-            const booking2Details = { ...mockBookingDetails, id: 'TEST002', guestId: 'guest2' };
+            const booking2Details = { ...mockBookingDetails, id: 'TEST002' };
 
             bookingService.createBooking(booking1Details);
             bookingService.createBooking(booking2Details);
@@ -103,30 +102,6 @@ describe('BookingService', () => {
         it('should return false when trying to delete non-existent booking', () => {
             const deleted = bookingService.deleteBooking('NONEXISTENT');
             expect(deleted).toBe(false);
-        });
-    });
-
-    describe('getBookingsByGuest', () => {
-        beforeEach(() => {
-            const booking1 = { ...mockBookingDetails, id: 'TEST001', guestId: 'guest1' };
-            const booking2 = { ...mockBookingDetails, id: 'TEST002', guestId: 'guest2' };
-            const booking3 = { ...mockBookingDetails, id: 'TEST003', guestId: 'guest1' };
-
-            bookingService.createBooking(booking1);
-            bookingService.createBooking(booking2);
-            bookingService.createBooking(booking3);
-        });
-
-        it('should return bookings for specific guest', () => {
-            const guest1Bookings = bookingService.getBookingsByGuest('guest1');
-            expect(guest1Bookings).toHaveLength(2);
-            expect(guest1Bookings[0].getDetails().guestId).toBe('guest1');
-            expect(guest1Bookings[1].getDetails().guestId).toBe('guest1');
-        });
-
-        it('should return empty array for guest with no bookings', () => {
-            const bookings = bookingService.getBookingsByGuest('nonexistent');
-            expect(bookings).toEqual([]);
         });
     });
 
