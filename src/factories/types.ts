@@ -2,7 +2,6 @@ import { RoomService, PaymentService, NotificationService, BookingService } from
 
 export interface ServiceFactoryConfig {
     enableObservers?: boolean;
-    enableMetrics?: boolean;
     initializationTimeout?: number;
     localMode?: boolean;
 }

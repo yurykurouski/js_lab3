@@ -11,7 +11,6 @@ import { LoadingIndicator } from '@/helpers';
 import {
     BookingEventManager,
     NotificationObserver,
-    AuditLogObserver,
     MetricsObserver,
 } from '@/observers';
 import { ServiceCollection, ServiceFactoryConfig } from './types';
@@ -89,10 +88,8 @@ export class ServiceFactory {
             const eventManager = BookingEventManager.getInstance();
 
             const notificationObserver = new NotificationObserver(notificationService);
-            const auditLogObserver = new AuditLogObserver();
 
             eventManager.subscribe(notificationObserver);
-            eventManager.subscribe(auditLogObserver);
 
             if (config.enableMetrics) {
                 const metricsObserver = new MetricsObserver();
@@ -137,21 +134,14 @@ export class ServiceFactory {
     }
 
 
-    /**
-     * Initialize Observer pattern components ?????
-     */
     private static initializeObservers(notificationService: NotificationService): void {
         try {
             const eventManager = BookingEventManager.getInstance();
 
-            // Create and register observers
             const notificationObserver = new NotificationObserver(notificationService);
-            const auditLogObserver = new AuditLogObserver();
             const metricsObserver = new MetricsObserver();
 
-            // Subscribe observers to the event manager
             eventManager.subscribe(notificationObserver);
-            eventManager.subscribe(auditLogObserver);
             eventManager.subscribe(metricsObserver);
         } catch (error) {
             throw new ServiceInitializationError(
