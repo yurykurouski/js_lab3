@@ -159,9 +159,9 @@ class HotelBookingApp {
                 </div>
                 <div class="room-actions">
                     ${room.isAvailable ?
-                `<button class="btn btn-primary btn-small" onclick="app.selectRoomForBooking('${room.isDeluxe ? 'deluxe' : 'standard'}')">Book Now</button>` :
-                `<button class="btn btn-secondary btn-small" disabled>Unavailable</button>`
-            }
+                            `<button class="btn btn-primary btn-small" onclick="app.selectRoomForBooking('${room.isDeluxe ? 'deluxe' : 'standard'}')">Book Now</button>` :
+                            '<button class="btn btn-secondary btn-small" disabled>Unavailable</button>'
+                    }
                     <button class="btn btn-secondary btn-small" onclick="app.viewRoomDetails('${room.id}')">View Details</button>
                 </div>
             </div>
@@ -235,10 +235,10 @@ class HotelBookingApp {
                     <div class="booking-actions">
                         <button class="btn btn-secondary btn-small" onclick="app.viewBookingDetails('${booking.bookingId}')">View Details</button>
                         ${booking.status !== 'cancelled' && booking.status !== 'checked_out' ?
-                    `<button class="btn btn-success btn-small" onclick="app.confirmBooking('${booking.bookingId}')">Confirm</button>
+                                `<button class="btn btn-success btn-small" onclick="app.confirmBooking('${booking.bookingId}')">Confirm</button>
                              <button class="btn btn-danger btn-small" onclick="app.cancelBooking('${booking.bookingId}')">Cancel</button>` :
-                    ''
-                }
+                                ''
+                        }
                     </div>
                 </div>
             `;
@@ -260,8 +260,8 @@ class HotelBookingApp {
                     cardNumber: formData.get('cardNumber'),
                     expiryDate: formData.get('expiryDate'),
                     cvv: formData.get('cvv'),
-                    cardHolderName: formData.get('cardHolderName')
-                }
+                    cardHolderName: formData.get('cardHolderName'),
+                },
             };
 
             const response = await fetch('/api/bookings', {
@@ -269,7 +269,7 @@ class HotelBookingApp {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(bookingData)
+                body: JSON.stringify(bookingData),
             });
 
             if (!response.ok) {
@@ -306,7 +306,7 @@ class HotelBookingApp {
             this.showLoading();
 
             const response = await fetch(`/api/bookings/confirm?id=${bookingId}`, {
-                method: 'PUT'
+                method: 'PUT',
             });
 
             if (!response.ok) {
@@ -335,7 +335,7 @@ class HotelBookingApp {
             this.showLoading();
 
             const response = await fetch(`/api/bookings?id=${bookingId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
             });
 
             if (!response.ok) {
