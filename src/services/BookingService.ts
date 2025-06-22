@@ -33,12 +33,6 @@ export class BookingService {
         return `BK${String(this.bookingCounter++).padStart(3, '0')}`;
     }
 
-    getBookingsByGuest(guestId: string): Booking[] {
-        return Array.from(this.bookings.values()).filter(
-            booking => booking.getDetails().guestId === guestId,
-        );
-    }
-
     getBookingsByRoom(roomId: string): Booking[] {
         return Array.from(this.bookings.values()).filter(
             booking => booking.getDetails().roomId === roomId,
