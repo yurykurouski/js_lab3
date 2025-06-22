@@ -1,13 +1,11 @@
 import inquirer from 'inquirer';
 import { HotelBookingFacade } from '../facade/HotelBookingFacade';
-import { Guest, PaymentInfo, BookingAction, RoomType } from '../types';
+import { PaymentInfo, BookingAction, RoomType } from '../types';
 import { ExitFromAppError } from '../exceptions';
-import { generateUUID } from '../helpers';
 
 
 export class BookingMenu {
     private facade: HotelBookingFacade;
-    private currentGuest: Guest | null = null;
 
     constructor(facade: HotelBookingFacade) {
         this.facade = facade;
@@ -40,7 +38,6 @@ export class BookingMenu {
     private async showMainMenu(): Promise<void> {
         const choices = [
             'View Available Rooms',
-            'Create/Switch Guest Profile',
             'Make a Booking',
             'Manage Existing Bookings',
             'View All Bookings',
@@ -59,9 +56,6 @@ export class BookingMenu {
         switch (action) {
             case 'View Available Rooms':
                 await this.showAvailableRooms();
-                break;
-            case 'Create/Switch Guest Profile':
-                await this.createOrSwitchGuest();
                 break;
             case 'Make a Booking':
                 await this.makeBooking();
@@ -92,51 +86,10 @@ export class BookingMenu {
         await this.pressEnterToContinue();
     }
 
-    private async createOrSwitchGuest(): Promise<void> {
-        console.log('\n👤 Guest Profile Management');
-
-        const { name, email, phone } = await inquirer.prompt<{
-            name: string;
-            email: string;
-            phone: string;
-        }>([
-            {
-                type: 'input',
-                name: 'name',
-                message: 'Enter full name:',
-                validate: (input) => input.trim() !== '' || 'Name cannot be empty',
-            },
-            {
-                type: 'input',
-                name: 'email',
-                message: 'Enter email address:',
-                validate: (input) => {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return emailRegex.test(input) || 'Please enter a valid email address';
-                },
-            },
-            {
-                type: 'input',
-                name: 'phone',
-                message: 'Enter phone number:',
-                validate: (input) => input.trim() !== '' || 'Phone number cannot be empty',
-            },
-        ]);
-
-        this.currentGuest = { id: generateUUID(), name, email, phone };
-        console.log(`✅ Guest profile set: ${name} (${email})`);
-
-        await this.pressEnterToContinue();
-    }
 
     private async makeBooking(): Promise<void> {
-        if (!this.currentGuest) {
-            console.log('❌ Please create a guest profile first.');
-            await this.pressEnterToContinue();
-            return;
-        }
 
-        console.log(`\n🎯 Making a booking for ${this.currentGuest.name}`);
+        console.log('\n🎯 Making a booking');
 
         const { roomType } = await inquirer.prompt<{ roomType: RoomType }>([
             {
@@ -177,7 +130,6 @@ export class BookingMenu {
         const paymentInfo = await this.getPaymentInfo();
 
         const bookingResult = await this.facade.bookRoom(
-            this.currentGuest,
             roomType === RoomType.DELUXE,
             new Date(checkInDate),
             new Date(checkOutDate),
@@ -238,7 +190,7 @@ export class BookingMenu {
         }
 
         const bookingChoices = allBookings.map(booking => ({
-            name: `${booking.bookingId} - ${booking.details.guestId} (${booking.status.toUpperCase()})`,
+            name: `${booking.bookingId} - (${booking.status.toUpperCase()})`,
             value: booking.bookingId,
         }));
 
@@ -269,7 +221,6 @@ export class BookingMenu {
 
         console.log('\n📊 Booking Details:');
         console.log(`🆔 ID: ${bookingInfo.booking.id}`);
-        console.log(`👤 Guest: ${bookingInfo.booking.guestId}`);
         console.log(`🏨 Room: ${bookingInfo.booking.roomId}`);
         console.log(`📅 Check-in: ${bookingInfo.booking.checkInDate.toDateString()}`);
         console.log(`📅 Check-out: ${bookingInfo.booking.checkOutDate.toDateString()}`);
@@ -344,7 +295,6 @@ export class BookingMenu {
         } else {
             allBookings.forEach(booking => {
                 console.log(`\n🆔 ${booking.bookingId}`);
-                console.log(`  👤 Guest: ${booking.details.guestId}`);
                 console.log(`  🏨 Room: ${booking.details.roomId}`);
                 console.log(`  📅 ${booking.details.checkInDate.toDateString()} → ${booking.details.checkOutDate.toDateString()}`);
                 console.log(`  💰 Total: $${booking.details.totalPrice}`);

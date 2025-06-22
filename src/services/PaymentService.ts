@@ -13,7 +13,6 @@ export class PaymentService {
         amount: number,
         cardNumber: string,
         bookingId?: string,
-        guestId?: string,
     ): boolean {
         console.log(`Processing payment of $${amount} with card ending in ${cardNumber.slice(-4)}`);
 
@@ -24,10 +23,9 @@ export class PaymentService {
 
         console.log('Payment processed successfully');
 
-        if (bookingId && guestId) {
+        if (bookingId) {
             this.eventManager.publishPaymentProcessed(
                 bookingId,
-                guestId,
                 amount,
                 'credit_card',
             );

@@ -1,4 +1,4 @@
-import { GuestService, RoomService, PaymentService, NotificationService, BookingService } from '@/services';
+import { RoomService, PaymentService, NotificationService, BookingService } from '@/services';
 
 export interface ServiceFactoryConfig {
     enableObservers?: boolean;
@@ -8,7 +8,6 @@ export interface ServiceFactoryConfig {
 }
 
 export interface ServiceCollection {
-    guestService: GuestService;
     roomService: RoomService;
     paymentService: PaymentService;
     notificationService: NotificationService;

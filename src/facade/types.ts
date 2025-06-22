@@ -1,9 +1,8 @@
 import { RoomService } from '@/services';
-import { Guest, PaymentInfo, BookingDetails, BookingAction, BookingActionInfo, Room } from '@/types';
+import { PaymentInfo, BookingDetails, BookingAction, BookingActionInfo, Room } from '@/types';
 
 export interface BookingFacade {
     bookRoom(
-        guest: Guest,
         isDeluxe: boolean,
         checkInDate: Date,
         checkOutDate: Date,

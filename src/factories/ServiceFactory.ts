@@ -1,7 +1,6 @@
 import { logger } from '@/helpers/logger';
 import { ServiceInitializationError } from '@/exceptions/ServiceInitializationError';
 import {
-    GuestService,
     RoomService,
     PaymentService,
     NotificationService,
@@ -55,7 +54,6 @@ export class ServiceFactory {
 
     private static createServiceInstances() {
         return {
-            guestService: new GuestService(),
             roomService: new RoomService(),
             paymentService: new PaymentService(),
             notificationService: new NotificationService(),
@@ -113,7 +111,6 @@ export class ServiceFactory {
     private static createFacadeInstance(services: ServiceCollection): HotelBookingFacade {
         try {
             return new HotelBookingFacade(
-                services.guestService,
                 services.roomService,
                 services.paymentService,
                 services.notificationService,

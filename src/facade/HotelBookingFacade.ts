@@ -1,13 +1,11 @@
 import {
     BookingDetails,
-    Guest,
     PaymentInfo,
     Room,
     BookingAction,
     BookingActionInfo,
 } from '@/types';
 import {
-    GuestService,
     RoomService,
     PaymentService,
     NotificationService,
@@ -17,20 +15,17 @@ import { BookingFacade } from './types';
 
 
 export class HotelBookingFacade implements BookingFacade {
-    private guestService: GuestService;
     private roomService: RoomService;
     private paymentService: PaymentService;
     private notificationService: NotificationService;
     private bookingService: BookingService;
 
     constructor(
-        guestService: GuestService,
         roomService: RoomService,
         paymentService: PaymentService,
         notificationService: NotificationService,
         bookingService: BookingService,
     ) {
-        this.guestService = guestService;
         this.roomService = roomService;
         this.paymentService = paymentService;
         this.notificationService = notificationService;
@@ -38,18 +33,14 @@ export class HotelBookingFacade implements BookingFacade {
     }
 
     public async bookRoom(
-        guest: Guest,
         isDeluxe: boolean,
         checkInDate: Date,
         checkOutDate: Date,
         paymentInfo: PaymentInfo,
     ): Promise<{ success: boolean; bookingId?: string; message: string }> {
         try {
-            console.log(`\n=== Starting booking process for ${guest.name} ===`);
+            console.log('\n=== Starting booking process  ===');
 
-            if (!this.guestService.validateGuest(guest.id)) {
-                this.guestService.registerGuest(guest);
-            }
 
             const availableRooms = await this.roomService.getRoomsByType(isDeluxe);
             if (availableRooms.length === 0) {
@@ -69,7 +60,6 @@ export class HotelBookingFacade implements BookingFacade {
                 totalPrice,
                 paymentInfo.cardNumber,
                 bookingId,
-                guest.id,
             );
             if (!paymentSuccess) {
                 return { success: false, message: 'Payment processing failed' };
@@ -82,7 +72,6 @@ export class HotelBookingFacade implements BookingFacade {
 
             const bookingDetails: BookingDetails = {
                 id: bookingId,
-                guestId: guest.id,
                 roomId: selectedRoom.id,
                 checkInDate,
                 checkOutDate,
@@ -92,8 +81,8 @@ export class HotelBookingFacade implements BookingFacade {
 
             this.bookingService.createBooking(bookingDetails);
 
-            this.notificationService.sendBookingConfirmation(guest.email, bookingId);
-            this.notificationService.sendReceiptEmail(guest.email, totalPrice);
+            this.notificationService.sendBookingConfirmation(bookingId);
+            this.notificationService.sendReceiptEmail(totalPrice);
 
             console.log(`=== Booking completed successfully! Booking ID: ${bookingId} ===\n`);
 
@@ -117,10 +106,6 @@ export class HotelBookingFacade implements BookingFacade {
 
         try {
             booking.confirm();
-            const guest = this.guestService.getGuest(booking.getDetails().guestId);
-            if (guest) {
-                this.notificationService.sendCheckInReminder(guest.email, bookingId);
-            }
             return { success: true, message: 'Booking confirmed successfully' };
         } catch (error) {
             return { success: false, message: error instanceof Error ? error.message : 'Confirmation failed' };
@@ -141,10 +126,7 @@ export class HotelBookingFacade implements BookingFacade {
 
             this.paymentService.refundPayment(bookingDetails.totalPrice, bookingId);
 
-            const guest = this.guestService.getGuest(bookingDetails.guestId);
-            if (guest) {
-                this.notificationService.sendCancellationNotice(guest.email, bookingId);
-            }
+            this.notificationService.sendCancellationNotice(bookingId);
 
             return { success: true, message: 'Booking cancelled successfully' };
         } catch (error) {

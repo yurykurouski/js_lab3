@@ -8,13 +8,6 @@ export enum HttpMethod {
     OPTIONS = 'OPTIONS',
 }
 
-export interface Guest {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-}
-
 export interface Room {
     id: string;
     number: string;
@@ -30,7 +23,6 @@ export enum RoomType {
 
 export interface BookingDetails {
     id: string;
-    guestId: string;
     roomId: string;
     checkInDate: Date;
     checkOutDate: Date;
